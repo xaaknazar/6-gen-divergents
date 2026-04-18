@@ -101,19 +101,12 @@ button { cursor: pointer; border: 0; background: none; color: inherit; }
   letter-spacing: 0.01em;
   color: var(--text);
 }
-.brand-logo {
-  display: block;
-  height: 52px;
-  width: auto;
-  margin: -10px 0;
-}
 .brand-divider { color: var(--text-muted); font-weight: 400; font-size: 18px; }
 .brand-sub { color: var(--text-dim); font-weight: 500; font-size: 17px; }
 
 @media (max-width: 640px) {
   .brand { gap: 10px; }
   .brand-wordmark { font-size: 19px; }
-  .brand-logo { height: 42px; margin: -8px 0; }
   .brand-sub { font-size: 14px; }
 }
 @media (max-width: 440px) {
@@ -630,7 +623,7 @@ main {
 }
 .pdf-wordmark-name { display: inline-block; }
 .pdf-wordmark-dot {
-  color: #5f6470;
+  color: #8a8f9a;
   font-weight: 400;
   margin: 0 6px;
 }
@@ -663,7 +656,7 @@ main {
   align-items: center;
   font-family: var(--font-body);
   font-size: 7.5pt;
-  color: #5f6470;
+  color: #8a8f9a;
   letter-spacing: 0.06em;
   padding-top: 3mm;
   border-top: 1px solid #ece8dd;
@@ -747,7 +740,7 @@ main {
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #5f6470;
+  color: #8a8f9a;
   margin-bottom: 6mm;
 }
 .pdf-cover-title {
@@ -796,7 +789,7 @@ main {
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #5f6470;
+  color: #8a8f9a;
   margin-bottom: 2mm;
 }
 .pdf-cover-callout-value {
@@ -841,7 +834,7 @@ main {
   text-align: center;
 }
 .pdf-overview-arrow {
-  color: #a39b87;
+  color: #cfc9b8;
   font-family: var(--font-body);
   font-size: 14pt;
   font-weight: 400;
@@ -1134,7 +1127,7 @@ main {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 20pt;
-  color: #a39b87;
+  color: #cfc9b8;
   letter-spacing: -0.02em;
 }
 .pdf-pairing-code-wrap {
@@ -1146,7 +1139,7 @@ main {
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #5f6470;
+  color: #8a8f9a;
   margin-bottom: 1mm;
 }
 .pdf-pairing-code-value {
@@ -1156,7 +1149,7 @@ main {
   letter-spacing: 0.02em;
   color: #1a1d24;
 }
-.pdf-pairing-code-value span { color: #a39b87; }
+.pdf-pairing-code-value span { color: #cfc9b8; }
 .pdf-pairing-blurb {
   font-family: var(--font-body);
   font-size: 10pt;
@@ -1171,7 +1164,7 @@ main {
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #5f6470;
+  color: #8a8f9a;
   margin: 6mm 0 3mm;
 }
 .pdf-pairing-grid {
@@ -1197,7 +1190,7 @@ main {
   font-weight: 700;
   font-size: 8pt;
   letter-spacing: 0.04em;
-  color: #5f6470;
+  color: #8a8f9a;
   min-width: 8mm;
   flex-shrink: 0;
 }
@@ -1260,7 +1253,7 @@ main {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 15pt;
-  color: #a39b87;
+  color: #cfc9b8;
   letter-spacing: -0.01em;
   line-height: 1;
 }
