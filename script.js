@@ -6,8 +6,7 @@
     email: '',
     current: 0,
     answers: new Array(QUESTIONS.length).fill(null),
-    startedAt: null,
-    ranks: null
+    startedAt: null
   };
 
   const $ = (id) => document.getElementById(id);
@@ -157,7 +156,6 @@
     const mid = ranked.slice(2, 4).map((r) => r.key);
     const low = ranked.slice(4, 6).map((r) => r.key);
 
-    state.ranks = { top, mid, low };
     renderPrintReport(top, mid, low);
   }
 
@@ -552,82 +550,23 @@
   }
 
   function gearBlock(letter, active, accent, label, size) {
+    const color = accent || '#c7ccd6';
+    const disc = Math.round(size * 0.78);
+    const fontPx = Math.round(size * 0.38);
+    const bg = active ? color : '#ffffff';
+    const ring = active ? color : '#c7ccd6';
+    const fg = active ? '#ffffff' : '#a7adb9';
+    const labelColor = active ? color : '#8a8f9a';
+    // Pure-CSS token (colored circle + letter) instead of an SVG gear: inline
+    // SVG and <img> data URIs both rendered unreliably in mobile html2canvas,
+    // causing all but the first gear to wrap onto a new line. A solid
+    // background-colored div with border-radius is something every browser's
+    // rasterizer handles identically.
     return `
-      <div class="pdf-gear" style="--gear-size:${size}px;--gear-color:${accent || '#c7ccd6'}">
-        ${gearImage(letter, active, accent)}
-        <div class="pdf-gear-label" style="color:${active ? (accent || '#8a8f9a') : '#8a8f9a'}">${label}</div>
+      <div class="pdf-gear" style="--gear-size:${size}px">
+        <div class="pdf-gear-disc" style="width:${disc}px;height:${disc}px;line-height:${disc}px;background:${bg};border:2px solid ${ring};color:${fg};font-size:${fontPx}px">${letter}</div>
+        <div class="pdf-gear-label" style="color:${labelColor}">${label}</div>
       </div>`;
-  }
-
-  // Points of the 8-tooth gear in a 0..104 space (design's [-52..52] coords + 52).
-  const GEAR_PATH = [
-    [44, 6], [60, 6], [63, 15], [72, 18], [80, 12], [92, 24],
-    [86, 32], [89, 41], [98, 44], [98, 60], [89, 63], [86, 72],
-    [92, 80], [80, 92], [72, 86], [63, 89], [60, 98], [44, 98],
-    [41, 89], [32, 86], [24, 92], [12, 80], [18, 72], [15, 63],
-    [6, 60], [6, 44], [15, 41], [18, 32], [12, 24], [24, 12],
-    [32, 18], [41, 15]
-  ];
-
-  // Render gear once to a PNG data URI so html2canvas on mobile doesn't have
-  // to parse an inline SVG (its SVG pipeline is unreliable on iOS Safari and
-  // was the reason gears on pages 2+ shifted onto new lines in the PDF).
-  const gearCache = new Map();
-  function gearImage(letter, active, accent) {
-    const key = `${letter}|${active ? 1 : 0}|${accent || ''}`;
-    let uri = gearCache.get(key);
-    if (!uri) {
-      uri = renderGearPng(letter, active, accent);
-      gearCache.set(key, uri);
-    }
-    return `<img src="${uri}" class="pdf-gear-svg" alt="" draggable="false" />`;
-  }
-
-  function renderGearPng(letter, active, accent) {
-    const fill = active ? accent : '#e8ecf3';
-    const stroke = active ? accent : '#c7ccd6';
-    const textColor = active ? accent : '#a7adb9';
-
-    // Render at 4× the 104-unit design so downscaling to any gear size stays crisp.
-    const DESIGN = 104;
-    const SCALE = 4;
-    const px = DESIGN * SCALE;
-    const canvas = document.createElement('canvas');
-    canvas.width = px;
-    canvas.height = px;
-    const ctx = canvas.getContext('2d');
-    ctx.scale(SCALE, SCALE);
-
-    ctx.lineJoin = 'round';
-    ctx.lineWidth = 1.4;
-
-    // Gear body
-    ctx.beginPath();
-    GEAR_PATH.forEach(([x, y], i) => {
-      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-    });
-    ctx.closePath();
-    ctx.fillStyle = fill;
-    ctx.fill();
-    ctx.strokeStyle = stroke;
-    ctx.stroke();
-
-    // Inner disc
-    ctx.beginPath();
-    ctx.arc(52, 52, 22, 0, Math.PI * 2);
-    ctx.fillStyle = '#ffffff';
-    ctx.fill();
-    ctx.strokeStyle = stroke;
-    ctx.stroke();
-
-    // Letter
-    ctx.fillStyle = textColor;
-    ctx.font = '700 26px Unbounded, Manrope, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(letter, 52, 54);
-
-    return canvas.toDataURL('image/png');
   }
 
   // ===== Google Sheets submission =====
@@ -750,21 +689,6 @@
       forceHorizontalRow(r, ':scope > *');
     });
 
-    // Pin SVG sizes from the gear's --gear-size variable so they render exactly.
-    container.querySelectorAll('.pdf-gear').forEach((g) => {
-      const size = parseFloat(g.style.getPropertyValue('--gear-size')) || 80;
-      const svg = g.querySelector('.pdf-gear-svg');
-      if (svg) {
-        // Mobile html2canvas uses SVG width/height attributes as the
-        // intrinsic size, not just CSS — pin both.
-        svg.setAttribute('width', String(size));
-        svg.setAttribute('height', String(size));
-        svg.style.setProperty('width', size + 'px', 'important');
-        svg.style.setProperty('height', size + 'px', 'important');
-        svg.style.setProperty('display', 'block', 'important');
-        svg.style.setProperty('margin', '0 auto', 'important');
-      }
-    });
   }
 
   async function downloadPdf() {
@@ -798,20 +722,6 @@
     try {
       if (document.fonts && document.fonts.ready) {
         await document.fonts.ready;
-      }
-      // Canvas text wants the font visible to the 2D context. Explicitly
-      // preload before regenerating gear PNGs so the letter uses Unbounded.
-      if (document.fonts && document.fonts.load) {
-        try {
-          await Promise.all([
-            document.fonts.load('700 26px Unbounded'),
-            document.fonts.load('700 26px Manrope')
-          ]);
-        } catch (e) { /* fallback to system font */ }
-      }
-      gearCache.clear();
-      if (state.ranks) {
-        renderPrintReport(state.ranks.top, state.ranks.mid, state.ranks.low);
       }
       // Force one frame so layout settles.
       await new Promise((r) => requestAnimationFrame(() => r()));

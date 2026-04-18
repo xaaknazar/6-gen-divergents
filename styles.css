@@ -572,9 +572,29 @@ main {
   float: none !important;
   flex: none !important;
 }
-.print-report.capturing .pdf-gear-svg {
-  display: inline-block !important;
+.print-report.capturing .pdf-gear-disc {
+  display: block !important;
+  margin: 0 auto !important;
 }
+/* Pin PDF paddings in px during capture. iOS Safari inside an
+   html2canvas iframe has been observed to resolve physical units (mm, pt)
+   with device-dependent scaling, which can silently make a 17mm horizontal
+   padding much wider than expected and overflow the gear row. Px is
+   DPI-independent and renders identically everywhere. */
+.print-report.capturing .pdf-header { padding: 34px 57px 23px !important; }
+.print-report.capturing .pdf-footer {
+  bottom: 26px !important;
+  left: 57px !important;
+  right: 57px !important;
+  padding-top: 11px !important;
+  font-size: 10px !important;
+}
+.print-report.capturing .pdf-cover-body { padding: 76px 64px 0 !important; }
+.print-report.capturing .pdf-overview-body { padding: 42px 64px 0 !important; max-width: 680px !important; }
+.print-report.capturing .pdf-results-body { padding: 42px 64px 0 !important; }
+.print-report.capturing .pdf-summary-body { padding: 38px 64px 0 !important; }
+.print-report.capturing .pdf-pairing-body { padding: 34px 64px 0 !important; }
+.print-report.capturing .pdf-next-body { padding: 30px 64px 0 !important; }
 .pdf-page:last-child { page-break-after: auto; break-after: auto; }
 
 /* ---- Header ---- */
@@ -652,7 +672,7 @@ main {
   display: block;
 }
 
-/* ---- Gears ---- */
+/* ---- Gears (flat circular tokens) ---- */
 .pdf-gear {
   text-align: center;
   flex-shrink: 0;
@@ -660,16 +680,19 @@ main {
   flex-direction: column;
   align-items: center;
 }
-.pdf-gear-svg {
-  width: var(--gear-size, 22mm);
-  height: var(--gear-size, 22mm);
+.pdf-gear-disc {
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-align: center;
+  box-sizing: border-box;
   display: block;
   margin: 0 auto;
 }
 .pdf-gear-label {
-  margin-top: 2mm;
+  margin-top: 8px;
   font-family: var(--font-body);
-  font-size: 7.5pt;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
