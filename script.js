@@ -556,16 +556,13 @@
   }
 
   function gearSVG(letter, active, accent) {
-    const fill = active ? accent : '#e8ecf3';
-    const stroke = active ? accent : '#c7ccd6';
-    const txt = active ? accent : '#a7adb9';
+    const fill = active ? accent : '#ffffff';
+    const stroke = active ? accent : '#d8d3c4';
+    const txt = active ? '#ffffff' : '#a7adb9';
     return `
-<svg viewBox="-52 -52 104 104" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="pdf-gear-svg">
-  <g fill="${fill}" stroke="${stroke}" stroke-width="1.4" stroke-linejoin="round">
-    <path d="M -8 -46 L 8 -46 L 11 -37 L 20 -34 L 28 -40 L 40 -28 L 34 -20 L 37 -11 L 46 -8 L 46 8 L 37 11 L 34 20 L 40 28 L 28 40 L 20 34 L 11 37 L 8 46 L -8 46 L -11 37 L -20 34 L -28 40 L -40 28 L -34 20 L -37 11 L -46 8 L -46 -8 L -37 -11 L -34 -20 L -40 -28 L -28 -40 L -20 -34 L -11 -37 Z" />
-  </g>
-  <circle r="22" fill="#ffffff" stroke="${stroke}" stroke-width="1.4" />
-  <text x="0" y="2" text-anchor="middle" dominant-baseline="middle" font-family="Unbounded, Manrope, sans-serif" font-weight="700" font-size="26" fill="${txt}">${letter}</text>
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="pdf-gear-svg">
+  <rect x="3" y="3" width="94" height="94" rx="22" ry="22" fill="${fill}" stroke="${stroke}" stroke-width="2.5" />
+  <text x="50" y="50" text-anchor="middle" dominant-baseline="central" font-family="Unbounded, Manrope, sans-serif" font-weight="700" font-size="48" fill="${txt}">${letter}</text>
 </svg>`;
   }
 
