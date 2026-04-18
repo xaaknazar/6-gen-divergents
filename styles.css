@@ -473,7 +473,7 @@ main {
 @page { size: A4; margin: 0; }
 
 @media print {
-  .bg-grid, .bg-glow, .topbar, .footer, .view, #restartBtn { display: none !important; }
+  .bg-grid, .bg-glow, .topbar, .footer, #view-intro, #view-test, .finish-card, #restartBtn { display: none !important; }
   html, body {
     background: #faf8f3 !important;
     color: #1a1d24 !important;
@@ -483,6 +483,7 @@ main {
     print-color-adjust: exact;
   }
   main { padding: 0 !important; margin: 0 !important; max-width: none !important; }
+  #view-results { display: block !important; }
   .print-report { display: block !important; }
 }
 
