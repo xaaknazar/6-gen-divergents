@@ -541,15 +541,26 @@ main {
   float: none !important;
   flex: none !important;
 }
-.print-report.capturing .pdf-overview-cycle > * {
+.print-report.capturing .pdf-overview-cycle > .pdf-gear {
   display: inline-block !important;
   vertical-align: middle !important;
   white-space: normal !important;
-  width: 16.6666% !important;
+  width: 14.8% !important;
   box-sizing: border-box !important;
   margin: 0 !important;
   float: none !important;
   flex: none !important;
+}
+.print-report.capturing .pdf-overview-cycle > .pdf-overview-arrow {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  white-space: nowrap !important;
+  width: 2.2% !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  float: none !important;
+  flex: none !important;
+  padding: 0 !important;
 }
 .print-report.capturing .pdf-pairing-card-head > * {
   display: inline-block !important;
@@ -707,12 +718,12 @@ main {
 .pdf-cover-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 34pt;
+  font-size: 49.5pt;
   line-height: 1.02;
   letter-spacing: -0.03em;
   color: #1a1d24;
   margin: 0 0 7mm;
-  max-width: 160mm;
+  max-width: 170mm;
 }
 .pdf-cover-lead {
   font-family: var(--font-body);
@@ -768,7 +779,7 @@ main {
 .pdf-overview-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 22pt;
+  font-size: 27pt;
   line-height: 1.1;
   letter-spacing: -0.02em;
   color: #1a1d24;
@@ -796,9 +807,11 @@ main {
 }
 .pdf-overview-arrow {
   color: #cfc9b8;
-  font-size: 13pt;
-  margin-top: -4mm;
-  flex-shrink: 0;
+  font-family: var(--font-body);
+  font-size: 14pt;
+  font-weight: 400;
+  line-height: 1;
+  padding: 0 1mm;
 }
 .pdf-overview-grid {
   display: grid;
@@ -852,7 +865,7 @@ main {
 .pdf-results-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 26pt;
+  font-size: 31.5pt;
   line-height: 1.05;
   letter-spacing: -0.02em;
   color: #1a1d24;
@@ -951,7 +964,7 @@ main {
 .pdf-summary-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 22pt;
+  font-size: 27pt;
   line-height: 1.08;
   letter-spacing: -0.02em;
   color: #1a1d24;
@@ -1036,7 +1049,7 @@ main {
 .pdf-pairing-title-h {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 26pt;
+  font-size: 31.5pt;
   line-height: 1.05;
   letter-spacing: -0.02em;
   color: #1a1d24;
@@ -1178,7 +1191,7 @@ main {
 .pdf-next-title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 22pt;
+  font-size: 27pt;
   line-height: 1.05;
   letter-spacing: -0.02em;
   color: #1a1d24;

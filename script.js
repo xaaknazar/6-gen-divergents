@@ -308,11 +308,12 @@
   }
 
   function renderOverviewPage() {
-    // Single row of 6 tokens — no inline arrows (they'd cramp the row on
-    // mobile captures). The cyclic nature is conveyed by the body text.
-    const gears = GENIUS_ORDER.map((k) => {
+    const gears = GENIUS_ORDER.map((k, i) => {
       const g = GENIUSES[k];
-      return gearBlock(k, true, g.color, g.name, 68);
+      const arrow = i < GENIUS_ORDER.length - 1
+        ? '<div class="pdf-overview-arrow" aria-hidden="true">→</div>'
+        : '';
+      return gearBlock(k, true, g.color, g.name, 72) + arrow;
     }).join('');
 
     const defs = GENIUS_ORDER.map((k) => {
@@ -557,13 +558,17 @@
   }
 
   function gearSVG(letter, active, accent) {
-    const fill = active ? accent : '#ffffff';
-    const stroke = active ? accent : '#d8d3c4';
-    const txt = active ? '#ffffff' : '#a7adb9';
+    const fill = active ? accent : '#e8ecf3';
+    const stroke = active ? accent : '#c7ccd6';
+    const inner = '#ffffff';
+    const txt = active ? accent : '#a7adb9';
     return `
-<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="pdf-gear-svg">
-  <rect x="3" y="3" width="94" height="94" rx="22" ry="22" fill="${fill}" stroke="${stroke}" stroke-width="2.5" />
-  <text x="50" y="50" text-anchor="middle" dominant-baseline="central" font-family="Unbounded, Manrope, sans-serif" font-weight="700" font-size="48" fill="${txt}">${letter}</text>
+<svg viewBox="-52 -52 104 104" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="pdf-gear-svg">
+  <g fill="${fill}" stroke="${stroke}" stroke-width="1.4" stroke-linejoin="round">
+    <path d="M -8 -46 L 8 -46 L 11 -37 L 20 -34 L 28 -40 L 40 -28 L 34 -20 L 37 -11 L 46 -8 L 46 8 L 37 11 L 34 20 L 40 28 L 28 40 L 20 34 L 11 37 L 8 46 L -8 46 L -11 37 L -20 34 L -28 40 L -40 28 L -34 20 L -37 11 L -46 8 L -46 -8 L -37 -11 L -34 -20 L -40 -28 L -28 -40 L -20 -34 L -11 -37 Z" />
+  </g>
+  <circle r="22" fill="${inner}" stroke="${stroke}" stroke-width="1.4" />
+  <text x="0" y="2" text-anchor="middle" dominant-baseline="middle" font-family="Unbounded, Manrope, sans-serif" font-weight="700" font-size="26" fill="${txt}">${letter}</text>
 </svg>`;
   }
 
@@ -638,6 +643,32 @@
     });
   }
 
+  // Overview cycle mixes 6 gears + 5 arrows; distribute unequally so arrows
+  // get narrow slots and gears take the bulk of the row.
+  function forceOverviewCycle(row) {
+    if (!row) return;
+    row.style.setProperty('display', 'block', 'important');
+    row.style.setProperty('width', '100%', 'important');
+    row.style.setProperty('font-size', '0', 'important');
+    row.style.setProperty('white-space', 'nowrap', 'important');
+    row.style.setProperty('box-sizing', 'border-box', 'important');
+    row.style.setProperty('text-align', 'center', 'important');
+
+    const kids = Array.from(row.children);
+    kids.forEach((kid) => {
+      const isArrow = kid.classList.contains('pdf-overview-arrow');
+      kid.style.setProperty('display', 'inline-block', 'important');
+      kid.style.setProperty('vertical-align', 'middle', 'important');
+      kid.style.setProperty('width', isArrow ? '2.2%' : '14.8%', 'important');
+      kid.style.setProperty('white-space', isArrow ? 'nowrap' : 'normal', 'important');
+      kid.style.setProperty('box-sizing', 'border-box', 'important');
+      kid.style.setProperty('margin', '0', 'important');
+      kid.style.setProperty('float', 'none', 'important');
+      kid.style.setProperty('flex', 'none', 'important');
+      if (isArrow) kid.style.setProperty('padding', '0', 'important');
+    });
+  }
+
   function forcePdfLayout(container) {
     container.querySelectorAll('.pdf-page').forEach((p) => {
       p.style.setProperty('width', '794px', 'important');
@@ -655,7 +686,7 @@
       forceHorizontalRow(r, '.pdf-gear');
     });
     container.querySelectorAll('.pdf-overview-cycle').forEach((r) => {
-      forceHorizontalRow(r, ':scope > *');
+      forceOverviewCycle(r);
     });
     container.querySelectorAll('.pdf-pairing-card-head').forEach((r) => {
       forceHorizontalRow(r, ':scope > *');
