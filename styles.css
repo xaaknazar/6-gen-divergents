@@ -598,6 +598,7 @@ main {
   width: var(--gear-size, 22mm);
   height: var(--gear-size, 22mm);
   display: block;
+  margin: 0 auto;
 }
 .pdf-gear-label {
   margin-top: 2mm;
@@ -668,11 +669,17 @@ main {
 }
 .pdf-cover-lead b { color: #1a1d24; font-weight: 700; }
 .pdf-cover-gears {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  justify-items: center;
-  gap: 2mm;
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
   margin: 0 0 12mm;
+}
+.pdf-cover-gears > .pdf-gear {
+  display: table-cell;
+  text-align: center;
+  vertical-align: top;
+  padding: 0 1mm;
 }
 .pdf-cover-callout {
   padding: 6mm 7mm;
@@ -721,13 +728,16 @@ main {
 }
 .pdf-overview-p b { color: #1a1d24; font-weight: 700; }
 .pdf-overview-cycle {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: max-content;
-  justify-content: space-between;
-  align-items: center;
-  column-gap: 1mm;
+  display: table;
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
   margin: 8mm 0 10mm;
+}
+.pdf-overview-cycle > * {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
 }
 .pdf-overview-arrow {
   color: #cfc9b8;
@@ -807,12 +817,18 @@ main {
   background: #ffffff;
   border: 1px solid #ece8dd;
   border-radius: 1.5mm;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  justify-items: center;
-  align-items: start;
-  gap: 2mm;
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
   margin-bottom: 9mm;
+  box-sizing: border-box;
+}
+.pdf-results-gears > .pdf-gear {
+  display: table-cell;
+  text-align: center;
+  vertical-align: top;
+  padding: 0 1mm;
 }
 .pdf-results-cols {
   display: grid;
@@ -996,11 +1012,20 @@ main {
   width: 1mm;
 }
 .pdf-pairing-card-head {
-  display: grid;
-  grid-template-columns: auto auto auto 1fr;
-  align-items: center;
-  column-gap: 4mm;
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
   margin-bottom: 5mm;
+}
+.pdf-pairing-card-head > * {
+  display: table-cell;
+  vertical-align: middle;
+  padding-right: 4mm;
+}
+.pdf-pairing-card-head > *:last-child {
+  padding-right: 0;
+  text-align: right;
+  width: 100%;
 }
 .pdf-pairing-plus {
   font-family: var(--font-display);
@@ -1010,7 +1035,6 @@ main {
   letter-spacing: -0.02em;
 }
 .pdf-pairing-code-wrap {
-  justify-self: end;
   text-align: right;
 }
 .pdf-pairing-code-label {
