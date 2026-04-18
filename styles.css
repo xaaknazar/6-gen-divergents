@@ -516,6 +516,54 @@ main {
   height: 1123px !important;
   min-height: 1123px !important;
 }
+/* Force every token row onto a single line during capture. Mobile Safari
+   + html2canvas 1.4.1 mis-renders flex / grid / table layouts, so we pin
+   rows to inline-block + percentage widths which it handles reliably. */
+.print-report.capturing .pdf-cover-gears,
+.print-report.capturing .pdf-results-gears,
+.print-report.capturing .pdf-overview-cycle,
+.print-report.capturing .pdf-pairing-card-head {
+  display: block !important;
+  width: 100% !important;
+  font-size: 0 !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+}
+.print-report.capturing .pdf-cover-gears > .pdf-gear,
+.print-report.capturing .pdf-results-gears > .pdf-gear {
+  display: inline-block !important;
+  vertical-align: top !important;
+  white-space: normal !important;
+  width: 16.6666% !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  float: none !important;
+  flex: none !important;
+}
+.print-report.capturing .pdf-overview-cycle > * {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  white-space: normal !important;
+  width: 16.6666% !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  float: none !important;
+  flex: none !important;
+}
+.print-report.capturing .pdf-pairing-card-head > * {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  white-space: normal !important;
+  width: 25% !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  float: none !important;
+  flex: none !important;
+}
+.print-report.capturing .pdf-gear-svg {
+  display: inline-block !important;
+}
 .pdf-page:last-child { page-break-after: auto; break-after: auto; }
 
 /* ---- Header ---- */

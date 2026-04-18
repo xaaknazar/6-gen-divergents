@@ -308,10 +308,11 @@
   }
 
   function renderOverviewPage() {
-    const gears = GENIUS_ORDER.map((k, i) => {
+    // Single row of 6 tokens — no inline arrows (they'd cramp the row on
+    // mobile captures). The cyclic nature is conveyed by the body text.
+    const gears = GENIUS_ORDER.map((k) => {
       const g = GENIUSES[k];
-      return gearBlock(k, true, g.color, g.name, 78) +
-        (i < 5 ? '<div class="pdf-overview-arrow">→</div>' : '');
+      return gearBlock(k, true, g.color, g.name, 68);
     }).join('');
 
     const defs = GENIUS_ORDER.map((k) => {
