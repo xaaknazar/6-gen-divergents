@@ -86,75 +86,29 @@
 
     <!-- ========== RESULTS ========== -->
     <section id="view-results" class="view view-results" hidden>
-      <div class="results-cover">
-        <div class="cover-eyebrow">ОТЧЁТ ПО РЕЗУЛЬТАТАМ</div>
-        <h1 class="cover-title">
-          <span class="cover-line cover-line-grad">6 ТИПОВ</span>
-          <span class="cover-line">РАБОЧЕГО ГЕНИЯ</span>
+      <div class="finish-card">
+        <div class="finish-eyebrow">ГОТОВО</div>
+        <h1 class="finish-title">
+          <span class="grad-text">Тест пройден</span>
         </h1>
-        <div class="cover-gears" id="cover-gears" aria-hidden="true"></div>
-        <p class="cover-name">Рабочий гений <b id="r-name">—</b> раскрыт</p>
-        <div class="cover-cta" aria-hidden="true">
-          <span class="cover-cta-text">Открой дары,<br>которые ты приносишь в&nbsp;работу</span>
-          <span class="cover-cta-arrow">↓</span>
+        <p class="finish-sub">
+          <b id="r-name">—</b>, твой персональный отчет готов.
+          Нажми «Скачать PDF», чтобы увидеть свои рабочие гении,
+          компетенции и фрустрации.
+        </p>
+        <div class="finish-actions">
+          <button id="printBtn" class="primary-btn">
+            Скачать PDF
+            <span class="arrow">↓</span>
+          </button>
+          <button id="retakeBtn" class="ghost-btn">Пройти заново</button>
         </div>
-        <div class="cover-brand">
-          <span class="cover-brand-powered">Сделано в</span>
-          <span class="cover-brand-name">Divergents</span>
-        </div>
-      </div>
-
-      <section class="results-overview" id="results-overview">
-        <div class="results-overview-eyebrow">ОБЗОР</div>
-        <h2 class="results-overview-title">Кратко о&nbsp;рабочем гении</h2>
-        <div class="results-overview-body">
-          <p>
-            Рабочий гений — это модель природных талантов, которые каждый из&nbsp;нас проявляет в&nbsp;работе.
-            Всего таких талантов шесть, и&nbsp;каждый из&nbsp;них необходим, чтобы любое дело —
-            идея, проект или задача — действительно было доведено до&nbsp;результата.
-          </p>
-          <p>
-            У&nbsp;каждого человека есть две области, которые мы называем <b>рабочими гениями</b>.
-            Это деятельность, которая даёт энергию, радость и&nbsp;увлечённость — твои природные дары.
-            Ещё две области — <b>рабочие фрустрации</b>: они отбирают силы, и&nbsp;в&nbsp;них обычно
-            трудно быть по‑настоящему эффективным. Оставшиеся две — <b>компетенции</b>:
-            в&nbsp;них можно работать нормально, но длительное пребывание утомляет.
-          </p>
-          <p>
-            Шесть типов связаны между собой и&nbsp;образуют единый рабочий поток. Каждый получает
-            импульс от&nbsp;соседа и&nbsp;передаёт его дальше — так рождается естественное движение
-            от&nbsp;<b>Задумки</b> к&nbsp;<b>Доводке</b>. Ниже — как устроен этот поток
-            и&nbsp;что стоит за каждым из&nbsp;шести гениев.
-          </p>
-        </div>
-      </section>
-
-      <div class="top-card">
-        <div class="card-title">Твои рабочие гении</div>
-        <div id="top-geniuses" class="top-list"></div>
-
-        <div class="card-title" style="margin-top:28px">Компетенции</div>
-        <div id="mid-geniuses" class="mid-list"></div>
-
-        <div class="card-title" style="margin-top:28px">Фрустрации</div>
-        <div id="low-geniuses" class="low-list"></div>
-      </div>
-
-      <div class="results-details" id="results-details">
-        <!-- Filled by JS -->
+        <p id="saveStatus" class="save-status" hidden></p>
       </div>
 
       <div class="print-report" id="print-report" aria-hidden="true">
         <!-- Filled by JS on render -->
       </div>
-
-      <div class="results-actions">
-        <button id="printBtn" class="primary-btn">Скачать PDF</button>
-        <button id="shareBtn" class="ghost-btn">Скопировать результат</button>
-        <button id="retakeBtn" class="ghost-btn">Пройти заново</button>
-      </div>
-
-      <p id="saveStatus" class="save-status" hidden></p>
     </section>
 
   </main>
