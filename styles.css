@@ -572,9 +572,16 @@ main {
   float: none !important;
   flex: none !important;
 }
+.print-report.capturing .pdf-gear-halo {
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
 .print-report.capturing .pdf-gear-disc {
   display: block !important;
-  margin: 0 auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  /* margin-top is an inline px offset used to center the disc in the halo */
 }
 /* Pin PDF paddings in px during capture. iOS Safari inside an
    html2canvas iframe has been observed to resolve physical units (mm, pt)
@@ -672,13 +679,18 @@ main {
   display: block;
 }
 
-/* ---- Gears (flat circular tokens) ---- */
+/* ---- Gears (two-layer circular tokens) ---- */
 .pdf-gear {
   text-align: center;
   flex-shrink: 0;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
+  display: inline-block;
+  vertical-align: top;
+}
+.pdf-gear-halo {
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 .pdf-gear-disc {
   border-radius: 50%;
@@ -687,17 +699,22 @@ main {
   text-align: center;
   box-sizing: border-box;
   display: block;
-  margin: 0 auto;
 }
 .pdf-gear-label {
   margin-top: 8px;
   font-family: var(--font-body);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   line-height: 1.15;
   white-space: nowrap;
+}
+.pdf-gear-icon {
+  margin-top: 3px;
+  font-family: 'Arial Unicode MS', 'Segoe UI Symbol', 'Apple Symbols', sans-serif;
+  line-height: 1;
+  letter-spacing: 0;
 }
 
 /* ---- Cover page ---- */
