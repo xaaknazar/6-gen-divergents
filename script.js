@@ -141,7 +141,18 @@
   }
 
   // ===== Results =====
-  let chartInstance = null;
+  function renderCoverGears() {
+    const wrap = $('cover-gears');
+    if (!wrap) return;
+    wrap.innerHTML = GENIUS_ORDER.map((k) => {
+      const g = GENIUSES[k];
+      return `
+        <div class="cover-gear" style="--g-color:${g.color}">
+          <span class="cover-gear-icon">${g.icon}</span>
+          <span class="cover-gear-label">${g.name}</span>
+        </div>`;
+    }).join('');
+  }
 
   function finishTest() {
     const result = computeScores();
@@ -154,6 +165,7 @@
     const { scores, max, ranked } = result;
 
     $('r-name').textContent = state.name;
+    renderCoverGears();
 
     // Top 2 = Working Geniuses
     const top = ranked.slice(0, 2);
@@ -185,22 +197,7 @@
         </div>`;
     }).join('');
 
-    // Legend
-    $('legend').innerHTML = GENIUS_ORDER.map((k) => {
-      const g = GENIUSES[k];
-      const pct = Math.round((scores[k] / max) * 100);
-      return `
-        <div class="legend-item">
-          <span class="swatch" style="background:${g.color}"></span>
-          <span>${g.name}</span>
-          <span class="score">${pct}%</span>
-        </div>`;
-    }).join('');
-
-    // Radar chart
-    drawRadar(scores, max);
-
-    // Print report (3 pages)
+    // Print report
     renderPrintReport(top, mid, low);
   }
 
@@ -448,81 +445,6 @@
       </div>`;
   }
 
-  function drawRadar(scores, max) {
-    const ctx = $('radarChart').getContext('2d');
-    if (chartInstance) chartInstance.destroy();
-
-    const labels = GENIUS_ORDER.map((k) => GENIUSES[k].name);
-    const data = GENIUS_ORDER.map((k) => Math.round((scores[k] / max) * 100));
-    const isPrint = window.matchMedia && window.matchMedia('print').matches;
-    const labelColor = isPrint ? '#111' : '#eef2ff';
-    const tickColor = isPrint ? '#555' : '#6f7896';
-    const gridColor = isPrint ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.08)';
-
-    chartInstance = new Chart(ctx, {
-      type: 'radar',
-      data: {
-        labels,
-        datasets: [{
-          label: '%',
-          data,
-          backgroundColor: 'rgba(124, 156, 255, 0.18)',
-          borderColor: 'rgba(183, 148, 255, 0.9)',
-          borderWidth: 2,
-          pointBackgroundColor: GENIUS_ORDER.map((k) => GENIUSES[k].color),
-          pointBorderColor: '#0a0e1a',
-          pointBorderWidth: 2,
-          pointRadius: 5,
-          pointHoverRadius: 7
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: (c) => `${c.label}: ${c.raw}%`
-            }
-          }
-        },
-        scales: {
-          r: {
-            min: 0,
-            max: 100,
-            ticks: {
-              stepSize: 20,
-              color: tickColor,
-              backdropColor: 'transparent',
-              font: { size: 11 },
-              callback: (v) => `${v}%`
-            },
-            grid: { color: gridColor },
-            angleLines: { color: gridColor },
-            pointLabels: {
-              color: labelColor,
-              font: { size: 13, family: 'Manrope', weight: '600' }
-            }
-          }
-        }
-      }
-    });
-  }
-
-  function applyChartTheme(forPrint) {
-    if (!chartInstance) return;
-    const labelColor = forPrint ? '#111' : '#eef2ff';
-    const tickColor = forPrint ? '#555' : '#6f7896';
-    const gridColor = forPrint ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.08)';
-    const r = chartInstance.options.scales.r;
-    r.pointLabels.color = labelColor;
-    r.ticks.color = tickColor;
-    r.grid.color = gridColor;
-    r.angleLines.color = gridColor;
-    chartInstance.update('none');
-  }
-
   // ===== Google Sheets submission =====
   function submitToSheets(result) {
     if (window.DEMO_MODE) return;
@@ -619,7 +541,6 @@
     $('retakeBtn').addEventListener('click', restart);
     $('printBtn').addEventListener('click', () => window.print());
     window.addEventListener('beforeprint', () => {
-      applyChartTheme(true);
       const el = $('print-date');
       if (el) {
         el.textContent = new Date().toLocaleString('ru-RU', {
@@ -628,7 +549,6 @@
         });
       }
     });
-    window.addEventListener('afterprint', () => applyChartTheme(false));
     $('shareBtn').addEventListener('click', copyResult);
 
     // Keyboard shortcuts for test: 1/2/3
