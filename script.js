@@ -609,6 +609,77 @@
     });
   }
 
+  // ===== PDF export =====
+  async function downloadPdf() {
+    const btn = $('printBtn');
+    const container = $('print-report');
+    if (!container) return;
+    const pages = container.querySelectorAll('.pdf-page');
+    if (!pages.length) return;
+
+    const originalLabel = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = 'Генерируем PDF…';
+
+    // Make the hidden report measurable by moving it off-screen but visible.
+    const prev = {
+      display: container.style.display,
+      position: container.style.position,
+      left: container.style.left,
+      top: container.style.top,
+      zIndex: container.style.zIndex,
+      pointerEvents: container.style.pointerEvents
+    };
+    container.style.display = 'block';
+    container.style.position = 'fixed';
+    container.style.left = '-10000px';
+    container.style.top = '0';
+    container.style.zIndex = '-1';
+    container.style.pointerEvents = 'none';
+
+    try {
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
+      // Force one frame so layout settles.
+      await new Promise((r) => requestAnimationFrame(() => r()));
+
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
+      const pageW = 210;
+      const pageH = 297;
+
+      for (let i = 0; i < pages.length; i += 1) {
+        const canvas = await window.html2canvas(pages[i], {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#faf8f3',
+          logging: false,
+          windowWidth: pages[i].scrollWidth,
+          windowHeight: pages[i].scrollHeight
+        });
+        const img = canvas.toDataURL('image/jpeg', 0.95);
+        if (i > 0) pdf.addPage('a4', 'portrait');
+        pdf.addImage(img, 'JPEG', 0, 0, pageW, pageH, undefined, 'FAST');
+      }
+
+      const safeName = (state.name || 'report').replace(/[^\p{L}\p{N}\-_. ]+/gu, '').trim() || 'report';
+      pdf.save(`Divergents — ${safeName}.pdf`);
+    } catch (err) {
+      console.error('PDF export failed', err);
+      alert('Не удалось сгенерировать PDF. Попробуй еще раз.');
+    } finally {
+      container.style.display = prev.display;
+      container.style.position = prev.position;
+      container.style.left = prev.left;
+      container.style.top = prev.top;
+      container.style.zIndex = prev.zIndex;
+      container.style.pointerEvents = prev.pointerEvents;
+      btn.disabled = false;
+      btn.innerHTML = originalLabel;
+    }
+  }
+
   // ===== Actions =====
   function restart() {
     state.current = 0;
@@ -641,16 +712,7 @@
     $('prevBtn').addEventListener('click', prevQuestion);
     $('restartBtn').addEventListener('click', restart);
     $('retakeBtn').addEventListener('click', restart);
-    $('printBtn').addEventListener('click', () => window.print());
-    window.addEventListener('beforeprint', () => {
-      const el = $('print-date');
-      if (el) {
-        el.textContent = new Date().toLocaleString('ru-RU', {
-          day: '2-digit', month: '2-digit', year: 'numeric',
-          hour: '2-digit', minute: '2-digit'
-        });
-      }
-    });
+    $('printBtn').addEventListener('click', downloadPdf);
     // Keyboard shortcuts for test: 1/2/3
     document.addEventListener('keydown', (e) => {
       if (views.test.hidden) return;
