@@ -473,7 +473,7 @@ main {
 @page { size: A4; margin: 0; }
 
 @media print {
-  .bg-grid, .bg-glow, .topbar, .footer, .view, #restartBtn { display: none !important; }
+  .bg-grid, .bg-glow, .topbar, .footer, #view-intro, #view-test, .finish-card, #restartBtn { display: none !important; }
   html, body {
     background: #faf8f3 !important;
     color: #1a1d24 !important;
@@ -483,6 +483,7 @@ main {
     print-color-adjust: exact;
   }
   main { padding: 0 !important; margin: 0 !important; max-width: none !important; }
+  #view-results { display: block !important; }
   .print-report { display: block !important; }
 }
 
@@ -500,6 +501,13 @@ main {
   box-sizing: border-box;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
+}
+/* While generating PDF, pin each page to exact A4 pixel dimensions so
+   mobile viewports can't reinterpret mm-based widths. */
+.print-report.capturing .pdf-page {
+  width: 794px !important;
+  height: 1123px !important;
+  min-height: 1123px !important;
 }
 .pdf-page:last-child { page-break-after: auto; break-after: auto; }
 
@@ -590,6 +598,7 @@ main {
   width: var(--gear-size, 22mm);
   height: var(--gear-size, 22mm);
   display: block;
+  margin: 0 auto;
 }
 .pdf-gear-label {
   margin-top: 2mm;
@@ -660,10 +669,17 @@ main {
 }
 .pdf-cover-lead b { color: #1a1d24; font-weight: 700; }
 .pdf-cover-gears {
-  display: flex;
-  justify-content: space-between;
-  gap: 2mm;
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
   margin: 0 0 12mm;
+}
+.pdf-cover-gears > .pdf-gear {
+  display: table-cell;
+  text-align: center;
+  vertical-align: top;
+  padding: 0 1mm;
 }
 .pdf-cover-callout {
   padding: 6mm 7mm;
@@ -712,11 +728,16 @@ main {
 }
 .pdf-overview-p b { color: #1a1d24; font-weight: 700; }
 .pdf-overview-cycle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1mm;
+  display: table;
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
   margin: 8mm 0 10mm;
+}
+.pdf-overview-cycle > * {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
 }
 .pdf-overview-arrow {
   color: #cfc9b8;
@@ -796,10 +817,18 @@ main {
   background: #ffffff;
   border: 1px solid #ece8dd;
   border-radius: 1.5mm;
-  display: flex;
-  justify-content: space-between;
-  gap: 2mm;
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
   margin-bottom: 9mm;
+  box-sizing: border-box;
+}
+.pdf-results-gears > .pdf-gear {
+  display: table-cell;
+  text-align: center;
+  vertical-align: top;
+  padding: 0 1mm;
 }
 .pdf-results-cols {
   display: grid;
@@ -983,10 +1012,20 @@ main {
   width: 1mm;
 }
 .pdf-pairing-card-head {
-  display: flex;
-  align-items: center;
-  gap: 4mm;
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
   margin-bottom: 5mm;
+}
+.pdf-pairing-card-head > * {
+  display: table-cell;
+  vertical-align: middle;
+  padding-right: 4mm;
+}
+.pdf-pairing-card-head > *:last-child {
+  padding-right: 0;
+  text-align: right;
+  width: 100%;
 }
 .pdf-pairing-plus {
   font-family: var(--font-display);
@@ -996,7 +1035,6 @@ main {
   letter-spacing: -0.02em;
 }
 .pdf-pairing-code-wrap {
-  margin-left: auto;
   text-align: right;
 }
 .pdf-pairing-code-label {

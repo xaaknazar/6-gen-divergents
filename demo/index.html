@@ -86,44 +86,29 @@
 
     <!-- ========== RESULTS ========== -->
     <section id="view-results" class="view view-results" hidden>
-      <div class="results-header">
-        <div class="results-eyebrow">Результат</div>
-        <h1 class="results-title"><span id="r-name">—</span></h1>
-        <p class="results-sub">Твой профиль по 6 типам рабочего таланта</p>
-      </div>
-
-      <div class="results-grid">
-        <div class="chart-card">
-          <div class="card-title">Карта талантов</div>
-          <div class="chart-box">
-            <canvas id="radarChart"></canvas>
-          </div>
-          <div class="legend" id="legend"></div>
+      <div class="finish-card">
+        <div class="finish-eyebrow">ГОТОВО</div>
+        <h1 class="finish-title">
+          <span class="grad-text">Тест пройден</span>
+        </h1>
+        <p class="finish-sub">
+          <b id="r-name">—</b>, твой персональный отчет готов.
+          Нажми «Скачать PDF», чтобы увидеть свои рабочие гении,
+          компетенции и фрустрации.
+        </p>
+        <div class="finish-actions">
+          <button id="printBtn" class="primary-btn">
+            Скачать PDF
+            <span class="arrow">↓</span>
+          </button>
+          <button id="retakeBtn" class="ghost-btn">Пройти заново</button>
         </div>
-
-        <div class="top-card">
-          <div class="card-title">Твои рабочие таланты</div>
-          <div id="top-geniuses" class="top-list"></div>
-
-          <div class="card-title" style="margin-top:28px">Компетенции</div>
-          <div id="mid-geniuses" class="mid-list"></div>
-
-          <div class="card-title" style="margin-top:28px">Фрустрации</div>
-          <div id="low-geniuses" class="low-list"></div>
-        </div>
+        <p id="saveStatus" class="save-status" hidden></p>
       </div>
 
-      <div class="results-details" id="results-details">
-        <!-- Filled by JS -->
+      <div class="print-report" id="print-report" aria-hidden="true">
+        <!-- Filled by JS on render -->
       </div>
-
-      <div class="results-actions">
-        <button id="printBtn" class="primary-btn">Скачать PDF</button>
-        <button id="shareBtn" class="ghost-btn">Скопировать результат</button>
-        <button id="retakeBtn" class="ghost-btn">Пройти заново</button>
-      </div>
-
-      <p id="saveStatus" class="save-status" hidden></p>
     </section>
 
   </main>
@@ -136,8 +121,8 @@
     <span>Divergents.kz | est. 2020 | All rights reserved</span>
   </footer>
 
-  <!-- Chart.js from CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="../config.js"></script>
   <script src="../questions.js"></script>
   <script src="../geniuses.js"></script>
