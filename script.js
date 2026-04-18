@@ -552,38 +552,20 @@
   function gearBlock(letter, active, accent, label, size) {
     const g = GENIUSES[letter];
     const color = accent || '#c7ccd6';
-    const halo = Math.round(size * 0.88);
-    const disc = Math.round(size * 0.7);
-    const pad = Math.round((halo - disc) / 2);
-    const fontPx = Math.round(size * 0.34);
+    const disc = Math.round(size * 0.78);
+    const fontPx = Math.round(size * 0.38);
     const iconPx = Math.round(size * 0.14);
-    const haloBg = active ? hexToSoft(color, 0.18) : '#f1ede2';
     const discBg = active ? color : '#ffffff';
     const discRing = active ? color : '#d8d3c4';
     const letterColor = active ? '#ffffff' : '#a7adb9';
     const labelColor = active ? color : '#8a8f9a';
     const iconColor = active ? color : '#b8bcc7';
-    // Two-layer token: soft outer halo + solid inner disc with the letter,
-    // plus the Unicode glyph as a quiet accent under the label. No gradients,
-    // no box-shadow, no flex — all layout via block + margin so mobile
-    // html2canvas reproduces it pixel-for-pixel.
     return `
       <div class="pdf-gear" style="--gear-size:${size}px">
-        <div class="pdf-gear-halo" style="width:${halo}px;height:${halo}px;background:${haloBg}">
-          <div class="pdf-gear-disc" style="width:${disc}px;height:${disc}px;line-height:${disc - 2}px;background:${discBg};border:1.5px solid ${discRing};color:${letterColor};font-size:${fontPx}px;margin:${pad}px auto 0">${letter}</div>
-        </div>
+        <div class="pdf-gear-disc" style="width:${disc}px;height:${disc}px;line-height:${disc - 2}px;background:${discBg};border:1.5px solid ${discRing};color:${letterColor};font-size:${fontPx}px">${letter}</div>
         <div class="pdf-gear-label" style="color:${labelColor}">${label}</div>
         <div class="pdf-gear-icon" style="color:${iconColor};font-size:${iconPx}px">${g ? g.icon : ''}</div>
       </div>`;
-  }
-
-  // Turn a #rrggbb accent into a soft rgba fill for the halo ring.
-  function hexToSoft(hex, alpha) {
-    if (!hex || hex[0] !== '#' || hex.length !== 7) return `rgba(200,200,200,${alpha})`;
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r},${g},${b},${alpha})`;
   }
 
   // ===== Google Sheets submission =====
