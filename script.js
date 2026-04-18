@@ -557,9 +557,9 @@
     const iconPx = Math.round(size * 0.14);
     const discBg = active ? color : '#ffffff';
     const discRing = active ? color : '#d8d3c4';
-    const letterColor = active ? '#ffffff' : '#a7adb9';
-    const labelColor = active ? color : '#8a8f9a';
-    const iconColor = active ? color : '#b8bcc7';
+    const letterColor = active ? '#ffffff' : '#7f8593';
+    const labelColor = active ? color : '#5f6470';
+    const iconColor = active ? color : '#7f8593';
     return `
       <div class="pdf-gear" style="--gear-size:${size}px">
         <div class="pdf-gear-disc" style="width:${disc}px;height:${disc}px;line-height:${disc - 2}px;background:${discBg};border:1.5px solid ${discRing};color:${letterColor};font-size:${fontPx}px">${letter}</div>

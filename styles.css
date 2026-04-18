@@ -623,7 +623,7 @@ main {
 }
 .pdf-wordmark-name { display: inline-block; }
 .pdf-wordmark-dot {
-  color: #8a8f9a;
+  color: #5f6470;
   font-weight: 400;
   margin: 0 6px;
 }
@@ -656,7 +656,7 @@ main {
   align-items: center;
   font-family: var(--font-body);
   font-size: 7.5pt;
-  color: #8a8f9a;
+  color: #5f6470;
   letter-spacing: 0.06em;
   padding-top: 3mm;
   border-top: 1px solid #ece8dd;
@@ -740,7 +740,7 @@ main {
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #8a8f9a;
+  color: #5f6470;
   margin-bottom: 6mm;
 }
 .pdf-cover-title {
@@ -789,7 +789,7 @@ main {
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #8a8f9a;
+  color: #5f6470;
   margin-bottom: 2mm;
 }
 .pdf-cover-callout-value {
@@ -834,7 +834,7 @@ main {
   text-align: center;
 }
 .pdf-overview-arrow {
-  color: #cfc9b8;
+  color: #a39b87;
   font-family: var(--font-body);
   font-size: 14pt;
   font-weight: 400;
@@ -1127,7 +1127,7 @@ main {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 20pt;
-  color: #cfc9b8;
+  color: #a39b87;
   letter-spacing: -0.02em;
 }
 .pdf-pairing-code-wrap {
@@ -1139,7 +1139,7 @@ main {
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #8a8f9a;
+  color: #5f6470;
   margin-bottom: 1mm;
 }
 .pdf-pairing-code-value {
@@ -1149,7 +1149,7 @@ main {
   letter-spacing: 0.02em;
   color: #1a1d24;
 }
-.pdf-pairing-code-value span { color: #cfc9b8; }
+.pdf-pairing-code-value span { color: #a39b87; }
 .pdf-pairing-blurb {
   font-family: var(--font-body);
   font-size: 10pt;
@@ -1164,7 +1164,7 @@ main {
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #8a8f9a;
+  color: #5f6470;
   margin: 6mm 0 3mm;
 }
 .pdf-pairing-grid {
@@ -1190,7 +1190,7 @@ main {
   font-weight: 700;
   font-size: 8pt;
   letter-spacing: 0.04em;
-  color: #8a8f9a;
+  color: #5f6470;
   min-width: 8mm;
   flex-shrink: 0;
 }
@@ -1253,7 +1253,7 @@ main {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 15pt;
-  color: #cfc9b8;
+  color: #a39b87;
   letter-spacing: -0.01em;
   line-height: 1;
 }
