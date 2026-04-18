@@ -504,8 +504,15 @@ main {
 }
 /* While generating PDF, pin each page to exact A4 pixel dimensions so
    mobile viewports can't reinterpret mm-based widths. */
+.print-report.capturing {
+  width: 794px !important;
+  min-width: 794px !important;
+  max-width: 794px !important;
+}
 .print-report.capturing .pdf-page {
   width: 794px !important;
+  min-width: 794px !important;
+  max-width: 794px !important;
   height: 1123px !important;
   min-height: 1123px !important;
 }

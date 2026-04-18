@@ -607,6 +607,71 @@
   }
 
   // ===== PDF export =====
+  function forceHorizontalRow(row, childSelector) {
+    if (!row) return;
+    row.style.setProperty('display', 'block', 'important');
+    row.style.setProperty('width', '100%', 'important');
+    row.style.setProperty('font-size', '0', 'important');
+    row.style.setProperty('white-space', 'nowrap', 'important');
+    row.style.setProperty('box-sizing', 'border-box', 'important');
+    row.style.setProperty('text-align', 'center', 'important');
+
+    const kids = Array.from(row.querySelectorAll(childSelector)).filter(
+      (el) => el.parentElement === row
+    );
+    if (!kids.length) return;
+
+    // Percentage width is relative to the parent's content box — since the
+    // page is pinned to 794px, these divide the row cleanly into N columns.
+    const per = (100 / kids.length).toFixed(4) + '%';
+
+    kids.forEach((kid) => {
+      kid.style.setProperty('display', 'inline-block', 'important');
+      kid.style.setProperty('vertical-align', 'middle', 'important');
+      kid.style.setProperty('white-space', 'normal', 'important');
+      kid.style.setProperty('width', per, 'important');
+      kid.style.setProperty('box-sizing', 'border-box', 'important');
+      kid.style.setProperty('margin', '0', 'important');
+      kid.style.setProperty('float', 'none', 'important');
+      kid.style.setProperty('flex', 'none', 'important');
+    });
+  }
+
+  function forcePdfLayout(container) {
+    container.querySelectorAll('.pdf-page').forEach((p) => {
+      p.style.setProperty('width', '794px', 'important');
+      p.style.setProperty('min-width', '794px', 'important');
+      p.style.setProperty('max-width', '794px', 'important');
+      p.style.setProperty('height', '1123px', 'important');
+      p.style.setProperty('min-height', '1123px', 'important');
+      p.style.setProperty('box-sizing', 'border-box', 'important');
+    });
+
+    container.querySelectorAll('.pdf-cover-gears').forEach((r) => {
+      forceHorizontalRow(r, '.pdf-gear');
+    });
+    container.querySelectorAll('.pdf-results-gears').forEach((r) => {
+      forceHorizontalRow(r, '.pdf-gear');
+    });
+    container.querySelectorAll('.pdf-overview-cycle').forEach((r) => {
+      forceHorizontalRow(r, ':scope > *');
+    });
+    container.querySelectorAll('.pdf-pairing-card-head').forEach((r) => {
+      forceHorizontalRow(r, ':scope > *');
+    });
+
+    // Pin SVG sizes from the gear's --gear-size variable so they render exactly.
+    container.querySelectorAll('.pdf-gear').forEach((g) => {
+      const size = parseFloat(g.style.getPropertyValue('--gear-size')) || 80;
+      const svg = g.querySelector('.pdf-gear-svg');
+      if (svg) {
+        svg.style.setProperty('width', size + 'px', 'important');
+        svg.style.setProperty('height', size + 'px', 'important');
+        svg.style.setProperty('display', 'inline-block', 'important');
+      }
+    });
+  }
+
   async function downloadPdf() {
     const btn = $('printBtn');
     const container = $('print-report');
@@ -641,6 +706,10 @@
       }
       // Force one frame so layout settles.
       await new Promise((r) => requestAnimationFrame(() => r()));
+      // Lock all gear rows to explicit pixel widths so html2canvas can't
+      // reflow them on mobile viewports.
+      forcePdfLayout(container);
+      await new Promise((r) => requestAnimationFrame(() => r()));
 
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
@@ -661,7 +730,15 @@
           width: pxW,
           height: pxH,
           windowWidth: pxW,
-          windowHeight: pxH
+          windowHeight: pxH,
+          onclone: (doc) => {
+            const clone = doc.getElementById('print-report');
+            if (clone) {
+              clone.classList.add('capturing');
+              clone.style.display = 'block';
+              forcePdfLayout(clone);
+            }
+          }
         });
         const img = canvas.toDataURL('image/jpeg', 0.95);
         if (i > 0) pdf.addPage('a4', 'portrait');
