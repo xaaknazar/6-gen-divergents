@@ -141,19 +141,6 @@
   }
 
   // ===== Results =====
-  function renderCoverGears() {
-    const wrap = $('cover-gears');
-    if (!wrap) return;
-    wrap.innerHTML = GENIUS_ORDER.map((k) => {
-      const g = GENIUSES[k];
-      return `
-        <div class="cover-gear" style="--g-color:${g.color}">
-          <span class="cover-gear-icon">${g.icon}</span>
-          <span class="cover-gear-label">${g.name}</span>
-        </div>`;
-    }).join('');
-  }
-
   function finishTest() {
     const result = computeScores();
     renderResults(result);
@@ -162,287 +149,219 @@
   }
 
   function renderResults(result) {
-    const { scores, max, ranked } = result;
-
+    const { ranked } = result;
     $('r-name').textContent = state.name;
-    renderCoverGears();
 
-    // Top 2 = Working Geniuses
-    const top = ranked.slice(0, 2);
-    const mid = ranked.slice(2, 4);
-    const low = ranked.slice(4, 6);
+    const top = ranked.slice(0, 2).map((r) => r.key);
+    const mid = ranked.slice(2, 4).map((r) => r.key);
+    const low = ranked.slice(4, 6).map((r) => r.key);
 
-    $('top-geniuses').innerHTML = top.map((r) => renderPill(r)).join('');
-    $('mid-geniuses').innerHTML = mid.map((r) => renderPill(r)).join('');
-    $('low-geniuses').innerHTML = low.map((r) => renderPill(r)).join('');
-
-    // Detail cards (full list, sorted by score)
-    $('results-details').innerHTML = ranked.map((r) => {
-      const g = GENIUSES[r.key];
-      return `
-        <div class="detail-card" style="--g-color:${g.color}">
-          <div class="detail-header">
-            <div class="detail-mark" style="background:${g.colorSoft};color:${g.color}">${g.icon}</div>
-            <div>
-              <div class="detail-title">${g.name}</div>
-              <div class="detail-sub">${g.subtitle}</div>
-            </div>
-            <div class="detail-score" style="color:${g.color}">${Math.round(r.pct * 100)}<span style="color:var(--text-muted);font-size:14px;font-weight:500">%</span></div>
-          </div>
-          <p class="detail-desc">${g.description}</p>
-          <div class="detail-meta">
-            <div class="meta-row"><span class="meta-label">Сила</span><span class="meta-value">${g.strength}</span></div>
-            <div class="meta-row"><span class="meta-label">Тень</span><span class="meta-value">${g.shadow}</span></div>
-          </div>
-        </div>`;
-    }).join('');
-
-    // Print report
     renderPrintReport(top, mid, low);
   }
 
-  const SHORT_DEFS = {
-    W: 'замечает необходимость улучшений и перемен',
-    I: 'подтверждает важность задачи и рождает идеи и решения',
-    D: 'оценивает жизнеспособность идеи или решения',
-    G: 'создаёт импульс и заряжает людей действовать',
-    E: 'подхватывает инициативу и помогает её реализовать',
-    T: 'доводит дело до результата и проверяет, что цель достигнута'
+  // Richer descriptions used on the PDF results pages.
+  const REPORT_DESCRIPTIONS = {
+    W: { full: 'Дар Задумки — тонко чувствовать потенциал в людях и ситуациях, задавать большие вопросы о смысле и возможностях. Это почти внутренний процесс, но с него начинается почти каждая инициатива.', strength: 'Замечаете возможности, которых не видят другие.', shadow: 'Иногда застреваете в размышлениях без действий.' },
+    I: { full: 'Дар Изобретения — создавать оригинальные идеи и решения с чистого листа. Без людей с этим даром команда редко рождает что‑то по‑настоящему новое.', strength: 'Создаёте оригинальное и небанальное.', shadow: 'Можете потерять интерес до воплощения идеи.' },
+    D: { full: 'Дар Оценки — интуитивное чувство того, что сработает, а что нет. Распознавание паттернов и нюансов, когда остальные тонут в деталях.', strength: 'Принимаете точные решения в условиях неопределённости.', shadow: 'Вам сложно объяснить логику — «я просто чувствую».' },
+    G: { full: 'Дар Гальванизации — превращать идеи в движение. Объединять людей, заряжать энергией, убеждать присоединиться к делу.', strength: 'Запускаете импульс и преодолеваете инерцию.', shadow: 'Можете вдохновлять на то, что ещё не готово к запуску.' },
+    E: { full: 'Дар Поддержки — интуитивно чувствовать, что нужно другим, и с готовностью подставлять плечо. Тот «клей», что удерживает команду вместе.', strength: 'Создаёте атмосферу безопасности и заботы.', shadow: 'Можете забывать о собственных границах и потребностях.' },
+    T: { full: 'Дар Доводки — не успокаиваться, пока задача не закрыта. Жить сроками и конкретными результатами, превращая планы в реальные достижения.', strength: 'Гарантируете, что работа действительно завершается.', shadow: 'Можете ставить задачу выше людей.' }
   };
 
-  const PRINT_PAGES = [
-    {
-      key: 'geniuses',
-      variant: 'top',
-      accent: '#10b981',
-      accentSoft: 'rgba(16, 185, 129, 0.14)',
-      label: 'РАБОЧИЙ ГЕНИЙ',
-      title: 'Твои рабочие гении',
-      icon: '↑',
-      intro: (a, b) => `По результатам теста, твои рабочие гении — <b>${a}</b> и <b>${b}</b>. Это деятельность, которая приносит тебе радость, энергию и увлечённость. Поэтому ты особенно силён в этих областях.`
-    },
-    {
-      key: 'competencies',
-      variant: 'mid',
-      accent: '#f59e0b',
-      accentSoft: 'rgba(245, 158, 11, 0.14)',
-      label: 'КОМПЕТЕНЦИЯ',
-      title: 'Твои компетенции',
-      icon: '≈',
-      intro: (a, b) => `По результатам теста, твои компетенции — <b>${a}</b> и <b>${b}</b>. Эта деятельность не вызывает ни полного восторга, ни отторжения. Важно понимать свои компетенции: большинство людей справляются в этих областях достаточно хорошо какое‑то время, но устают, если нет возможности опираться на настоящие гении.`
-    },
-    {
-      key: 'frustrations',
-      variant: 'low',
-      accent: '#ef4444',
-      accentSoft: 'rgba(239, 68, 68, 0.14)',
-      label: 'ФРУСТРАЦИЯ',
-      title: 'Твои фрустрации',
-      icon: '↓',
-      intro: (a, b) => `По результатам теста, твои фрустрации — <b>${a}</b> и <b>${b}</b>. Знать свои фрустрации важно по двум причинам. Во‑первых, чтобы не проводить в них слишком много времени — это ведёт к усталости и выгоранию. Во‑вторых, чтобы не винить себя за то, что ты не одарён от природы именно в этих областях.`
-    }
-  ];
+  const OVERVIEW_DEFS = {
+    W: 'Замечает потребность в улучшении или изменении.',
+    I: 'Подтверждает важность этой потребности и предлагает идею или решение.',
+    D: 'Оценивает ценность и жизнеспособность идеи или решения.',
+    G: 'Создаёт энтузиазм и импульс для действий вокруг идеи.',
+    E: 'Инициирует поддержку и помогает в реализации.',
+    T: 'Доводит решение до завершения и добивается результата.'
+  };
+
+  const PAGES = {
+    geniuses:     { variant: 'geniuses',     page: 3, accent: '#1a9b5a', eyebrow: 'Результаты · рабочие таланты', title: 'Твои рабочие таланты', intro: (a, b) => `По результатам теста, твои рабочие таланты — <b>${a}</b> и <b>${b}</b>. Это деятельность, которая приносит радость, энергию и страсть. Именно поэтому ты особенно силён в этих областях.` },
+    competencies: { variant: 'competencies', page: 4, accent: '#e8a21b', eyebrow: 'Результаты · компетенции',     title: 'Твои компетенции',     intro: (a, b) => `Твои компетенции — <b>${a}</b> и <b>${b}</b>. Это деятельность, которая не приносит ни полного удовлетворения, ни сильного дискомфорта. Ты справляешься в этих областях, но со временем можешь уставать, если нет возможности использовать настоящие таланты.` },
+    frustrations: { variant: 'frustrations', page: 5, accent: '#c04a3e', eyebrow: 'Результаты · фрустрации',     title: 'Твои фрустрации',     intro: (a, b) => `Твои фрустрации — <b>${a}</b> и <b>${b}</b>. Знать их важно по двум причинам: не проводить в этих областях слишком много времени — это ведёт к усталости, — и не испытывать ненужной вины за то, что ты не одарён от природы именно в них.` }
+  };
+
+  function formatDate(iso) {
+    const d = iso ? new Date(iso) : new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()}`;
+  }
 
   function renderPrintReport(top, mid, low) {
     const container = $('print-report');
     if (!container) return;
-    const groups = [top, mid, low];
-
-    const cover = renderCoverPage();
-    const overview = renderOverviewPage();
-    const summary = renderSummaryPage(top, mid, low);
-    const details = PRINT_PAGES.map((page, i) => renderDetailPage(page, groups[i])).join('');
-
-    container.innerHTML = cover + overview + summary + details;
+    container.innerHTML =
+      renderCoverPage(top) +
+      renderOverviewPage() +
+      renderResultsPage(top, PAGES.geniuses) +
+      renderResultsPage(mid, PAGES.competencies) +
+      renderResultsPage(low, PAGES.frustrations);
   }
 
-  function renderCoverPage() {
+  function reportHeader(eyebrow, accent) {
+    return `
+      <header class="pdf-header">
+        <div class="pdf-wordmark">
+          Divergents<span class="pdf-wordmark-dot">·</span><span class="pdf-wordmark-sub">6 гениев команды</span>
+        </div>
+        ${eyebrow ? `<div class="pdf-header-eyebrow" style="color:${accent || '#1a1d24'}">${eyebrow}</div>` : ''}
+      </header>`;
+  }
+
+  function reportFooter(page) {
+    return `
+      <div class="pdf-footer">
+        <span>Divergents.kz · 6 гениев команды</span>
+        <span>${state.name || ''}</span>
+        <span>${page} / 5</span>
+      </div>`;
+  }
+
+  function renderCoverPage(top) {
+    const date = formatDate(state.startedAt);
     const gears = GENIUS_ORDER.map((k) => {
       const g = GENIUSES[k];
-      return `
-        <div class="pp-cover-chip" style="background:${g.color}">
-          <span>${g.icon}</span>
-        </div>`;
+      const active = top.includes(k);
+      return gearBlock(k, active, g.color, g.name, 88);
     }).join('');
 
+    const topNames = top.map((k) => GENIUSES[k].name).join(' · ');
+
     return `
-      <section class="print-page pp-cover">
-        <div class="pp-cover-top">
-          <span class="pp-cover-eyebrow">ОТЧЁТ ПО РЕЗУЛЬТАТАМ</span>
-        </div>
-        <div class="pp-cover-body">
-          <h1 class="pp-cover-title">
-            <span class="pp-cover-gradient">6 ТИПОВ</span>
-            <span class="pp-cover-strong">РАБОЧЕГО</span>
-            <span class="pp-cover-strong">ГЕНИЯ</span>
-          </h1>
-          <div class="pp-cover-row">${gears}</div>
-          <p class="pp-cover-subtitle">Рабочий гений <b>${state.name}</b> раскрыт</p>
-          <div class="pp-cover-cta">
-            <span class="pp-cover-cta-text">Открой дары,<br>которые ты приносишь в работу</span>
-            <span class="pp-cover-cta-arrow">↓</span>
+      <section class="pdf-page pdf-cover">
+        ${reportHeader(date, '#1a1d24')}
+        <div class="pdf-cover-bg"></div>
+        <div class="pdf-cover-glow"></div>
+        <div class="pdf-cover-body">
+          <div class="pdf-cover-eyebrow">Отчёт по ассессменту · 6 гениев команды</div>
+          <h1 class="pdf-cover-title">Найди дары,<br>которые ты приносишь в работу.</h1>
+          <p class="pdf-cover-lead">
+            Результаты ассессмента <b>${state.name || ''}</b>. На следующих страницах — твой уникальный профиль по шести типам рабочего таланта.
+          </p>
+          <div class="pdf-cover-gears">${gears}</div>
+          <div class="pdf-cover-callout">
+            <div class="pdf-cover-callout-label">Ведущие таланты</div>
+            <div class="pdf-cover-callout-value">${topNames}</div>
           </div>
         </div>
-        <div class="pp-cover-footer">
-          <span class="pp-cover-powered">Сделано в</span>
-          <span class="pp-cover-brand">Divergents</span>
-        </div>
+        <div class="pdf-cover-powered">Powered by Divergents · методология The 6 Types of Working Genius</div>
+        ${reportFooter(1)}
       </section>`;
   }
 
   function renderOverviewPage() {
-    const diagram = GENIUS_ORDER.map((k, idx) => {
+    const gears = GENIUS_ORDER.map((k, i) => {
       const g = GENIUSES[k];
-      const row = idx % 2 === 0 ? 'top' : 'bottom';
-      return `
-        <div class="pp-ov-gear" data-row="${row}" style="--g-color:${g.color}">
-          <div class="pp-ov-label">${g.name}</div>
-          <div class="pp-ov-body">${gearSVG(k, g.color)}</div>
-        </div>`;
+      return gearBlock(k, true, g.color, g.name, 78) +
+        (i < 5 ? '<div class="pdf-overview-arrow">→</div>' : '');
     }).join('');
 
     const defs = GENIUS_ORDER.map((k) => {
       const g = GENIUSES[k];
       return `
-        <div class="pp-ov-def">
-          <div class="pp-ov-def-term" style="color:${g.color}">${g.name.toUpperCase()}</div>
-          <div class="pp-ov-def-desc">${SHORT_DEFS[k]}</div>
+        <div class="pdf-overview-def">
+          <div class="pdf-overview-chip" style="background:${g.color}">${k}</div>
+          <div class="pdf-overview-def-body">
+            <div class="pdf-overview-def-title">${g.name.toUpperCase()} <span>· ${g.subtitle}</span></div>
+            <div class="pdf-overview-def-desc">${OVERVIEW_DEFS[k]}</div>
+          </div>
         </div>`;
     }).join('');
 
     return `
-      <section class="print-page pp-overview">
-        <header class="pp-banner"><span class="pp-section">ОБЗОР</span></header>
-        <div class="pp-body">
-          <h1 class="pp-title">Кратко о рабочих гениях</h1>
-          <p class="pp-intro">
-            У каждого человека есть природные таланты в работе. Существует шесть типов, и каждый из них
-            необходим, чтобы довести любое дело до результата. Два из шести — это то, что мы называем
-            <b>рабочими гениями</b>: деятельность, которая даёт радость, энергию и увлечённость. Ещё два —
-            это <b>рабочие фрустрации</b>: они забирают силы. Оставшиеся два — <b>рабочие компетенции</b>:
-            в них можно работать нормально какое‑то время, но они не питают и не истощают.
+      <section class="pdf-page pdf-overview">
+        ${reportHeader('Обзор · Overview', '#4c5160')}
+        <div class="pdf-overview-body">
+          <h2 class="pdf-overview-title">Шесть типов рабочего таланта</h2>
+          <p class="pdf-overview-p">
+            У каждого из нас есть два типа деятельности — <b>рабочие таланты</b>, — которые дают нам радость, энергию и страсть.
+            Ещё два — <b>фрустрации</b> — отнимают силы. Оставшиеся два — <b>компетенции</b> — нейтральны:
+            мы можем делать их хорошо какое‑то время, но со временем устаём.
           </p>
-          <p class="pp-intro">
-            Шесть типов образуют единый поток, необходимый для реализации любого проекта. Каждый тип
-            получает импульс от соседа и передаёт его дальше — от Задумки к Доводке.
+          <p class="pdf-overview-p">
+            Шесть типов образуют взаимозависимую модель — полный цикл любой работы.
+            Каждый тип передаёт эстафету следующему: всё начинается с <b>Задумки</b> и завершается <b>Доводкой</b>.
           </p>
-
-          <h2 class="pp-subtitle">ШЕСТЬ ТИПОВ</h2>
-          <div class="pp-ov-diagram">${diagram}</div>
-
-          <div class="pp-ov-list">${defs}</div>
+          <div class="pdf-overview-cycle">${gears}</div>
+          <div class="pdf-overview-grid">${defs}</div>
         </div>
-        <div class="pp-page-foot"><span>${state.name}</span><span>divergents.kz</span></div>
+        ${reportFooter(2)}
       </section>`;
   }
 
-  function renderSummaryPage(top, mid, low) {
-    const card = (pair, page) => {
-      const aName = GENIUSES[pair[0].key].name;
-      const bName = GENIUSES[pair[1].key].name;
-      const items = pair.map((r) => {
-        const g = GENIUSES[r.key];
-        return `
-          <div class="pp-sum-item">
-            <div class="pp-sum-mark" style="color:${g.color};background:${g.colorSoft}">${g.icon}</div>
-            <div class="pp-sum-text">${g.tagline}</div>
-          </div>`;
-      }).join('');
-      return `
-        <div class="pp-sum-card pp-sum-${page.variant}" style="--pp-accent:${page.accent};--pp-accent-soft:${page.accentSoft}">
-          <div class="pp-sum-head">
-            <span class="pp-sum-icon">${page.icon}</span>
-            <span class="pp-sum-label">${page.label}</span>
-          </div>
-          <p class="pp-sum-desc">Твои области <b>${page.label.toLowerCase()}</b> — <b>${aName}</b> и <b>${bName}</b>.</p>
-          <div class="pp-sum-items">${items}</div>
-        </div>`;
-    };
+  function renderResultsPage(pair, page) {
+    const [a, b] = pair;
+    const aName = GENIUSES[a].name;
+    const bName = GENIUSES[b].name;
+    const activeSet = new Set(pair);
 
-    return `
-      <section class="print-page pp-summary">
-        <header class="pp-banner"><span class="pp-section">РЕЗУЛЬТАТЫ</span></header>
-        <div class="pp-body">
-          <h1 class="pp-title">Твои результаты</h1>
-          <p class="pp-intro">${state.name}, ниже — краткая сводка результатов твоего теста.</p>
-          ${card(top, PRINT_PAGES[0])}
-          ${card(mid, PRINT_PAGES[1])}
-          ${card(low, PRINT_PAGES[2])}
-        </div>
-        <div class="pp-page-foot"><span>${state.name}</span><span>divergents.kz</span></div>
-      </section>`;
-  }
-
-  function renderDetailPage(page, pair) {
-    const activeKeys = new Set(pair.map((r) => r.key));
-    const aName = GENIUSES[pair[0].key].name;
-    const bName = GENIUSES[pair[1].key].name;
-
-    const gears = GENIUS_ORDER.map((k, idx) => {
+    const gears = GENIUS_ORDER.map((k) => {
       const g = GENIUSES[k];
-      const active = activeKeys.has(k);
-      const row = (idx % 2 === 0) ? 'top' : 'bottom';
-      return `
-        <div class="pp-gear ${active ? 'is-active' : ''}" data-row="${row}" style="${active ? `--pp-accent:${page.accent}` : ''}">
-          <div class="pp-gear-label">${g.name}</div>
-          <div class="pp-gear-body">
-            ${gearSVG(k, active ? page.accent : null)}
-          </div>
-        </div>`;
+      const active = activeSet.has(k);
+      return gearBlock(k, active, active ? page.accent : null, g.name, 80);
     }).join('');
 
-    const cols = pair.map((r) => {
-      const g = GENIUSES[r.key];
+    const cols = pair.map((k) => {
+      const g = GENIUSES[k];
+      const d = REPORT_DESCRIPTIONS[k];
       return `
-        <div class="pp-col">
-          <div class="pp-col-title" style="color:${page.accent}">${g.name.toUpperCase()}</div>
-          <p class="pp-col-text">${g.description}</p>
-          <div class="pp-col-meta">
-            <div><span>Сила:</span> ${g.strength}</div>
-            <div><span>Тень:</span> ${g.shadow}</div>
+        <div class="pdf-results-col">
+          <div class="pdf-results-col-title" style="color:${page.accent}">
+            ${g.name.toUpperCase()}
+            <span class="pdf-results-col-sub">${g.subtitle.toUpperCase()}</span>
+          </div>
+          <p class="pdf-results-col-text">${d.full}</p>
+          <div class="pdf-results-col-meta">
+            <div class="pdf-meta-row">
+              <span class="pdf-meta-label" style="color:${page.accent}">Сила</span>
+              <span class="pdf-meta-value">${d.strength}</span>
+            </div>
+            <div class="pdf-meta-row">
+              <span class="pdf-meta-label" style="color:${page.accent}">Тень</span>
+              <span class="pdf-meta-value">${d.shadow}</span>
+            </div>
           </div>
         </div>`;
     }).join('');
 
     return `
-      <section class="print-page pp-detail" data-variant="${page.key}" style="--pp-accent:${page.accent}">
-        <header class="pp-banner"><span class="pp-section">РЕЗУЛЬТАТЫ</span></header>
-        <div class="pp-body">
-          <h1 class="pp-title">${page.title}</h1>
-          <p class="pp-intro">${page.intro(aName.toUpperCase(), bName.toUpperCase())}</p>
-          <div class="pp-gears">${gears}</div>
-          <div class="pp-cols">${cols}</div>
+      <section class="pdf-page pdf-results" data-variant="${page.variant}">
+        ${reportHeader(page.eyebrow, page.accent)}
+        <div class="pdf-results-body">
+          <div class="pdf-results-eyebrow" style="color:${page.accent}">${page.eyebrow}</div>
+          <h2 class="pdf-results-title">${page.title}</h2>
+          <p class="pdf-results-intro">${page.intro(aName.toUpperCase(), bName.toUpperCase())}</p>
+          <div class="pdf-results-gears">${gears}</div>
+          <div class="pdf-results-cols">${cols}</div>
         </div>
-        <div class="pp-page-foot"><span>${state.name}</span><span>divergents.kz</span></div>
+        <div class="pdf-results-watermark">${state.name || ''}</div>
+        ${reportFooter(page.page)}
       </section>`;
   }
 
-  function gearSVG(letter, activeColor) {
-    const isActive = Boolean(activeColor);
-    const fill = isActive ? activeColor : '#d4d8e0';
-    const stroke = isActive ? activeColor : '#b8bdc8';
-    const inner = '#ffffff';
-    const txt = isActive ? activeColor : '#a0a6b4';
+  function gearBlock(letter, active, accent, label, size) {
     return `
-<svg viewBox="-52 -52 104 104" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <g fill="${fill}" stroke="${stroke}" stroke-width="1.5" stroke-linejoin="round">
+      <div class="pdf-gear" style="--gear-size:${size}px;--gear-color:${accent || '#c7ccd6'}">
+        ${gearSVG(letter, active, accent)}
+        <div class="pdf-gear-label" style="color:${active ? (accent || '#8a8f9a') : '#8a8f9a'}">${label}</div>
+      </div>`;
+  }
+
+  function gearSVG(letter, active, accent) {
+    const fill = active ? accent : '#e8ecf3';
+    const stroke = active ? accent : '#c7ccd6';
+    const txt = active ? accent : '#a7adb9';
+    return `
+<svg viewBox="-52 -52 104 104" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="pdf-gear-svg">
+  <g fill="${fill}" stroke="${stroke}" stroke-width="1.4" stroke-linejoin="round">
     <path d="M -8 -46 L 8 -46 L 11 -37 L 20 -34 L 28 -40 L 40 -28 L 34 -20 L 37 -11 L 46 -8 L 46 8 L 37 11 L 34 20 L 40 28 L 28 40 L 20 34 L 11 37 L 8 46 L -8 46 L -11 37 L -20 34 L -28 40 L -40 28 L -34 20 L -37 11 L -46 8 L -46 -8 L -37 -11 L -34 -20 L -40 -28 L -28 -40 L -20 -34 L -11 -37 Z" />
   </g>
-  <circle r="22" fill="${inner}" stroke="${stroke}" stroke-width="1.5" />
+  <circle r="22" fill="#ffffff" stroke="${stroke}" stroke-width="1.4" />
   <text x="0" y="2" text-anchor="middle" dominant-baseline="middle" font-family="Unbounded, Manrope, sans-serif" font-weight="700" font-size="26" fill="${txt}">${letter}</text>
 </svg>`;
-  }
-
-  function renderPill(r) {
-    const g = GENIUSES[r.key];
-    return `
-      <div class="genius-pill">
-        <div class="g-mark" style="background:${g.colorSoft};color:${g.color}">${g.icon}</div>
-        <div class="g-info">
-          <div class="g-name">${g.name}</div>
-          <div class="g-tag">${g.tagline}</div>
-        </div>
-      </div>`;
   }
 
   // ===== Google Sheets submission =====
@@ -486,28 +405,6 @@
   }
 
   // ===== Actions =====
-  function copyResult() {
-    const { scores, max, ranked } = computeScores();
-    const topNames = ranked.slice(0, 2).map((r) => GENIUSES[r.key].name).join(' и ');
-    const lowNames = ranked.slice(4, 6).map((r) => GENIUSES[r.key].name).join(' и ');
-    const lines = [
-      `Результат теста 6 Гениев — ${state.name}`,
-      '',
-      `Ведущие таланты: ${topNames}`,
-      `Фрустрации: ${lowNames}`,
-      '',
-      'Результаты по типам:',
-      ...GENIUS_ORDER.map((k) => `• ${GENIUSES[k].name}: ${Math.round((scores[k] / max) * 100)}%`)
-    ];
-    const text = lines.join('\n');
-    navigator.clipboard.writeText(text).then(() => {
-      const btn = $('shareBtn');
-      const old = btn.textContent;
-      btn.textContent = '✓ Скопировано';
-      setTimeout(() => { btn.textContent = old; }, 1800);
-    });
-  }
-
   function restart() {
     state.current = 0;
     state.answers = new Array(QUESTIONS.length).fill(null);
@@ -549,8 +446,6 @@
         });
       }
     });
-    $('shareBtn').addEventListener('click', copyResult);
-
     // Keyboard shortcuts for test: 1/2/3
     document.addEventListener('keydown', (e) => {
       if (views.test.hidden) return;
