@@ -101,12 +101,19 @@ button { cursor: pointer; border: 0; background: none; color: inherit; }
   letter-spacing: 0.01em;
   color: var(--text);
 }
+.brand-logo {
+  display: block;
+  height: 52px;
+  width: auto;
+  margin: -10px 0;
+}
 .brand-divider { color: var(--text-muted); font-weight: 400; font-size: 18px; }
 .brand-sub { color: var(--text-dim); font-weight: 500; font-size: 17px; }
 
 @media (max-width: 640px) {
   .brand { gap: 10px; }
   .brand-wordmark { font-size: 19px; }
+  .brand-logo { height: 42px; margin: -8px 0; }
   .brand-sub { font-size: 14px; }
 }
 @media (max-width: 440px) {
