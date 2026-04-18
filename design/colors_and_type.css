@@ -1,0 +1,183 @@
+/* =============================================================
+   6 Geniuses · Divergents — Design Tokens
+   Import first in any file that uses this system.
+   ============================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700&display=swap');
+
+:root {
+  /* ---------- Canvas & surfaces ---------- */
+  --bg:              #0a0e1a;   /* near-black navy */
+  --bg-soft:         #111831;   /* raised canvas */
+  --surface:         rgba(255, 255, 255, 0.04);
+  --surface-strong:  rgba(255, 255, 255, 0.07);
+  --surface-inset:   rgba(0, 0, 0, 0.25);
+  --border:          rgba(255, 255, 255, 0.09);
+  --border-strong:   rgba(255, 255, 255, 0.16);
+
+  /* ---------- Text ---------- */
+  --fg:              #eef2ff;   /* primary */
+  --fg-dim:          #a6b0cf;   /* secondary */
+  --fg-muted:        #6f7896;   /* tertiary / captions */
+  --fg-on-accent:    #0a0e1a;   /* dark text on gradient button */
+
+  /* ---------- Accents (signature gradient) ---------- */
+  --accent-indigo:   #7c9cff;
+  --accent-lavender: #b794ff;
+  --accent-peach:    #ffb199;
+  --gradient-brand:  linear-gradient(135deg, #7c9cff 0%, #b794ff 45%, #ffb199 100%);
+  --gradient-brand-h: linear-gradient(90deg,  #7c9cff 0%, #b794ff 100%);
+
+  /* ---------- Semantic ---------- */
+  --success:         #10b981;
+  --error:           #f87171;
+
+  /* ---------- Six genius colors ---------- */
+  --g-wonder:        #8b5cf6;   /* W · Задумка · Wonder */
+  --g-invention:     #f59e0b;   /* I · Изобретение · Invention */
+  --g-discernment:   #14b8a6;   /* D · Оценка · Discernment */
+  --g-galvanizing:   #ef4444;   /* G · Гальванизация · Galvanizing */
+  --g-enablement:    #10b981;   /* E · Поддержка · Enablement */
+  --g-tenacity:      #3b82f6;   /* T · Доводка · Tenacity */
+
+  --g-wonder-soft:       rgba(139, 92, 246, 0.15);
+  --g-invention-soft:    rgba(245, 158, 11, 0.15);
+  --g-discernment-soft:  rgba(20, 184, 166, 0.15);
+  --g-galvanizing-soft:  rgba(239, 68, 68, 0.15);
+  --g-enablement-soft:   rgba(16, 185, 129, 0.15);
+  --g-tenacity-soft:     rgba(59, 130, 246, 0.15);
+
+  /* ---------- Print-report accents (used on PDF pages) ---------- */
+  --pp-geniuses:         #1a9b5a;   /* Working Geniuses */
+  --pp-competencies:     #e8a21b;   /* Working Competencies */
+  --pp-frustrations:     #c04a3e;   /* Working Frustrations */
+
+  /* ---------- Radii ---------- */
+  --radius-xs:  3px;
+  --radius-sm:  10px;
+  --radius-md:  12px;   /* inputs, buttons, pills */
+  --radius-lg:  18px;   /* cards, hero */
+  --radius-pill: 999px;
+
+  /* ---------- Spacing (8pt base) ---------- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 32px;
+  --sp-8: 40px;
+  --sp-9: 56px;
+  --sp-10: 80px;
+
+  /* ---------- Shadow ---------- */
+  --shadow-lg:  0 30px 80px -20px rgba(0, 0, 0, 0.6);
+  --shadow-btn: 0 8px 24px -8px rgba(124, 156, 255, 0.6);
+
+  /* ---------- Type families ---------- */
+  --font-body:    'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Unbounded', 'Manrope', system-ui, sans-serif;
+
+  /* ---------- Type scale ---------- */
+  --fs-eyebrow:  12px;
+  --fs-small:    13px;
+  --fs-body:     16px;
+  --fs-lead:     17px;
+  --fs-h4:       20px;
+  --fs-h3:       22px;
+  --fs-h2:       26px;
+  --fs-h1:       48px;
+  --fs-display:  62px;
+
+  --lh-tight:    1.05;
+  --lh-snug:     1.2;
+  --lh-normal:   1.55;
+  --lh-loose:    1.6;
+
+  /* ---------- Tracking ---------- */
+  --track-display: -0.02em;
+  --track-tight:   -0.01em;
+  --track-wide:     0.08em;
+  --track-widest:   0.12em;
+
+  /* ---------- Motion ---------- */
+  --ease-out:       cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast:       150ms;
+  --dur-base:       200ms;
+  --dur-slow:       400ms;
+}
+
+/* =============================================================
+   Semantic element defaults
+   ============================================================= */
+
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, .h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(30px, 5vw, var(--fs-h1));
+  line-height: var(--lh-tight);
+  letter-spacing: var(--track-display);
+  margin: 0 0 var(--sp-3);
+}
+
+h2, .h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-h2);
+  line-height: 1.3;
+  letter-spacing: var(--track-tight);
+  margin: 0 0 var(--sp-3);
+}
+
+h3, .h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-h3);
+  letter-spacing: var(--track-tight);
+  margin: 0 0 var(--sp-2);
+}
+
+h4, .h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-h4);
+  letter-spacing: var(--track-tight);
+  margin: 0 0 var(--sp-2);
+}
+
+p, .body {
+  font-size: var(--fs-body);
+  line-height: var(--lh-loose);
+  color: var(--fg-dim);
+  margin: 0 0 var(--sp-4);
+}
+
+.eyebrow {
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--track-widest);
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  font-weight: 700;
+}
+
+.grad-text {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+code, .mono {
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+  font-size: 0.92em;
+}

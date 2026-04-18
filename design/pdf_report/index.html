@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<title>Divergents · 6 Geniuses · PDF Report</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { margin: 0; padding: 0; background: #e8e4d8; color: #1a1d24; font-family: 'Manrope', sans-serif; }
+  body { padding: 20px 0 60px; }
+  .hint {
+    position: fixed; top: 16px; left: 16px; z-index: 100;
+    padding: 8px 14px;
+    background: rgba(26,29,36,0.9);
+    color: #eef2ff;
+    font: 500 12px 'Manrope', sans-serif;
+    letter-spacing: 0.04em;
+    border-radius: 8px;
+  }
+
+  /* A4 pages are a fixed 794×1123 canvas. On narrow viewports an inline
+     JS hook (below) scales each <section> to fit the viewport width and
+     collapses the empty space transform leaves behind. CSS only sets the
+     transform-origin; scale itself must be JS-applied because calc() can't
+     feed scale() cleanly. */
+  #root section { transform-origin: top center; }
+
+  @media (max-width: 820px) {
+    body { padding: 12px 0 40px; }
+    .hint {
+      font-size: 10.5px;
+      padding: 6px 10px;
+      top: 10px; left: 10px; right: 10px;
+      text-align: center;
+    }
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .hint { display: none; }
+    #root section {
+      transform: none !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+      page-break-after: always;
+    }
+    #root section:last-of-type { page-break-after: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="hint">A4 · 8 страниц · Cmd/Ctrl + P чтобы сохранить PDF</div>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="GearSVG.jsx" data-plugins="transform-react-jsx-source" data-filename="GearSVG.jsx"></script>
+<script type="text/babel" src="ReportShell.jsx" data-plugins="transform-react-jsx-source" data-filename="ReportShell.jsx"></script>
+<script type="text/babel" src="CoverPage.jsx" data-plugins="transform-react-jsx-source" data-filename="CoverPage.jsx"></script>
+<script type="text/babel" src="OverviewPage.jsx" data-plugins="transform-react-jsx-source" data-filename="OverviewPage.jsx"></script>
+<script type="text/babel" src="SummaryPage.jsx" data-plugins="transform-react-jsx-source" data-filename="SummaryPage.jsx"></script>
+<script type="text/babel" src="ResultsPages.jsx" data-plugins="transform-react-jsx-source" data-filename="ResultsPages.jsx"></script>
+<script type="text/babel" src="PairingPage.jsx" data-plugins="transform-react-jsx-source" data-filename="PairingPage.jsx"></script>
+<script type="text/babel" src="NextStepsPage.jsx" data-plugins="transform-react-jsx-source" data-filename="NextStepsPage.jsx"></script>
+<script type="text/babel" data-plugins="transform-react-jsx-source" data-filename="inline-app">
+  function App() {
+    const name = 'Азамат Жусупов';
+    const top = ['E','W'];
+    const mid = ['G','D'];
+    const low = ['T','I'];
+    return (
+      <>
+        <CoverPage name={name} top={top} />
+        <OverviewPage name={name} />
+        <SummaryPage name={name} top={top} mid={mid} low={low} />
+        <GeniusesPage name={name} top={top} />
+        <CompetenciesPage name={name} mid={mid} />
+        <FrustrationsPage name={name} low={low} />
+        <PairingPage name={name} top={top} />
+        <NextStepsPage name={name} />
+      </>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+<script>
+  // Mobile scaling: A4 pages are a fixed 794×1123 design surface.
+  // On narrow viewports, scale each <section> so it fills the viewport width,
+  // then compensate the empty space transform creates by setting margin-bottom
+  // to the negative of the delta between unscaled and scaled height.
+  (function () {
+    const DESIGN_W = 794;
+    const DESIGN_H = 1123;
+    const BREAKPOINT = 820;
+    const GUTTER = 16;
+    const GAP = 12;
+
+    function applyScale() {
+      const root = document.getElementById('root');
+      if (!root) return;
+      const sections = root.querySelectorAll('section');
+      if (!sections.length) return;
+
+      const vw = document.documentElement.clientWidth;
+      if (vw >= BREAKPOINT) {
+        sections.forEach(s => {
+          s.style.transform = '';
+          s.style.marginTop = '';
+          s.style.marginBottom = '';
+          s.style.marginLeft = '';
+          s.style.marginRight = '';
+        });
+        return;
+      }
+
+      const scale = Math.min(1, (vw - GUTTER) / DESIGN_W);
+      const scaledH = DESIGN_H * scale;
+      const delta = DESIGN_H - scaledH; // empty space to collapse
+
+      sections.forEach((s, i) => {
+        s.style.transform = 'scale(' + scale + ')';
+        s.style.marginLeft = 'auto';
+        s.style.marginRight = 'auto';
+        s.style.marginTop = (i === 0 ? 0 : GAP) + 'px';
+        s.style.marginBottom = (-delta) + 'px';
+      });
+    }
+
+    // Re-run whenever nodes are added or viewport changes.
+    const root = document.getElementById('root');
+    if (root) {
+      const mo = new MutationObserver(applyScale);
+      mo.observe(root, { childList: true, subtree: false });
+    }
+    window.addEventListener('resize', applyScale);
+    window.addEventListener('load', applyScale);
+    // Initial passes — React + Babel mount async.
+    setTimeout(applyScale, 200);
+    setTimeout(applyScale, 800);
+    setTimeout(applyScale, 2000);
+  })();
+</script>
+</body>
+</html>

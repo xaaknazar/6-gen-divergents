@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); }
+  .card { padding: 24px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .primary-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 22px;
+    border-radius: 12px;
+    border: 0;
+    background: linear-gradient(135deg, #7c9cff, #b794ff);
+    color: #0a0e1a;
+    font-weight: 700;
+    font-size: 15px;
+    font-family: inherit;
+    box-shadow: 0 8px 24px -8px rgba(124,156,255,0.6);
+    cursor: pointer;
+  }
+  .ghost-btn {
+    padding: 12px 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.04);
+    color: #a6b0cf;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .pill {
+    display: inline-block;
+    padding: 6px 14px;
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 999px;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #a6b0cf;
+    background: rgba(255,255,255,0.04);
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <button class="primary-btn">Начать тест <span>→</span></button>
+  <button class="ghost-btn">← Назад</button>
+  <button class="ghost-btn">Пройти заново</button>
+  <span class="pill">Результат</span>
+</div>
+</body>
+</html>

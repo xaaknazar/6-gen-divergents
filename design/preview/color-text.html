@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+  .card { padding: 18px 24px; }
+  .row { display: flex; gap: 8px; }
+  .step {
+    flex: 1 1 0;
+    min-width: 0;
+    border-radius: 10px;
+    padding: 10px 12px;
+    min-height: 86px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: var(--font-body);
+  }
+  .step .name { font-size: 12px; font-weight: 700; }
+  .step .hex {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 10px;
+    opacity: 0.8;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="row">
+    <div class="step" style="background:#eef2ff; color:#0a0e1a;"><div class="name">Primary</div><div class="hex">#EEF2FF<br/>--fg</div></div>
+    <div class="step" style="background:#a6b0cf; color:#0a0e1a;"><div class="name">Dim</div><div class="hex">#A6B0CF<br/>--fg-dim</div></div>
+    <div class="step" style="background:#6f7896; color:#eef2ff;"><div class="name">Muted</div><div class="hex">#6F7896<br/>--fg-muted</div></div>
+    <div class="step" style="background:rgba(255,255,255,0.16); color:#eef2ff; border: 1px solid rgba(255,255,255,0.2);"><div class="name">Border Strong</div><div class="hex">#FFF · 16%</div></div>
+    <div class="step" style="background:rgba(255,255,255,0.09); color:#a6b0cf; border: 1px solid rgba(255,255,255,0.12);"><div class="name">Border</div><div class="hex">#FFF · 9%</div></div>
+  </div>
+</div>
+</body>
+</html>

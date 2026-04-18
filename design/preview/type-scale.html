@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); }
+  .card { padding: 22px 24px; }
+  .row { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .spec { display: flex; align-items: baseline; gap: 14px; }
+  .spec .sample { flex: 1; }
+  .spec .meta { color: #6f7896; font-size: 11px; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+  .h1 { font-family: var(--font-display); font-weight: 700; font-size: 30px; line-height: 1.1; letter-spacing: -0.02em; }
+  .h2 { font-family: var(--font-display); font-weight: 700; font-size: 24px; line-height: 1.2; letter-spacing: -0.01em; }
+  .h3 { font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: -0.01em; }
+  .body { font-size: 15px; color: #a6b0cf; line-height: 1.55; }
+  .small { font-size: 13px; color: #6f7896; }
+  .eyebrow { font-size: 12px; color: #6f7896; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="row">
+    <div class="spec"><div class="sample h1">Твой профиль по 6 типам</div><div class="meta">h1 · Unbounded 700 · 30–48px</div></div>
+    <div class="spec"><div class="sample h2">Вопрос 1 из 42</div><div class="meta">h2 · Unbounded 700 · 24px</div></div>
+    <div class="spec"><div class="sample h3">Твои рабочие таланты</div><div class="meta">h3 · Unbounded 700 · 20px</div></div>
+    <div class="spec"><div class="sample body">Люди с даром Задумки тонко чувствуют потенциал в людях и проектах.</div><div class="meta">body · Manrope 400 · 15–16px</div></div>
+    <div class="spec"><div class="sample small">Нажмите на вариант, чтобы продолжить</div><div class="meta">small · Manrope 500 · 13px</div></div>
+    <div class="spec"><div class="sample eyebrow">Результат</div><div class="meta">eyebrow · Manrope 700 · 12/0.12em</div></div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); overflow: hidden; }
+  .card {
+    padding: 24px;
+    background: #0a0e1a;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::after {
+    content: '';
+    position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(closest-side, rgba(124,156,255,0.5), transparent 70%),
+                radial-gradient(closest-side, rgba(183,148,255,0.35) 0%, transparent 70%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+  .brand {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Unbounded', sans-serif;
+  }
+  .brand-wordmark { font-weight: 700; font-size: 22px; color: #eef2ff; letter-spacing: 0.01em; }
+  .brand-divider { color: #6f7896; font-size: 18px; }
+  .brand-sub { color: #a6b0cf; font-weight: 500; font-size: 16px; font-family: 'Manrope', sans-serif; }
+  .row { position: relative; z-index: 1; margin-top: 18px; display: flex; align-items: center; gap: 10px; }
+  .glyphs { display: flex; gap: 10px; }
+  .g {
+    width: 32px; height: 32px;
+    display: grid; place-items: center;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand">
+    <span class="brand-wordmark">Divergents</span>
+    <span class="brand-divider">·</span>
+    <span class="brand-sub">6 гениев команды</span>
+  </div>
+  <div class="row">
+    <div class="glyphs">
+      <div class="g" style="background:rgba(139,92,246,0.15); color:#8b5cf6;">✦</div>
+      <div class="g" style="background:rgba(245,158,11,0.15); color:#f59e0b;">✸</div>
+      <div class="g" style="background:rgba(20,184,166,0.15); color:#14b8a6;">◈</div>
+      <div class="g" style="background:rgba(239,68,68,0.15); color:#ef4444;">▲</div>
+      <div class="g" style="background:rgba(16,185,129,0.15); color:#10b981;">♥</div>
+      <div class="g" style="background:rgba(59,130,246,0.15); color:#3b82f6;">◆</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
