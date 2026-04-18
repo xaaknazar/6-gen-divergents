@@ -502,6 +502,13 @@ main {
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
+/* While generating PDF, pin each page to exact A4 pixel dimensions so
+   mobile viewports can't reinterpret mm-based widths. */
+.print-report.capturing .pdf-page {
+  width: 794px !important;
+  height: 1123px !important;
+  min-height: 1123px !important;
+}
 .pdf-page:last-child { page-break-after: auto; break-after: auto; }
 
 /* ---- Header ---- */
@@ -662,6 +669,7 @@ main {
 .pdf-cover-lead b { color: #1a1d24; font-weight: 700; }
 .pdf-cover-gears {
   display: flex;
+  flex-wrap: nowrap;
   justify-content: space-between;
   gap: 2mm;
   margin: 0 0 12mm;
@@ -714,6 +722,7 @@ main {
 .pdf-overview-p b { color: #1a1d24; font-weight: 700; }
 .pdf-overview-cycle {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
   gap: 1mm;
@@ -798,6 +807,7 @@ main {
   border: 1px solid #ece8dd;
   border-radius: 1.5mm;
   display: flex;
+  flex-wrap: nowrap;
   justify-content: space-between;
   gap: 2mm;
   margin-bottom: 9mm;
@@ -985,6 +995,7 @@ main {
 }
 .pdf-pairing-card-head {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 4mm;
   margin-bottom: 5mm;

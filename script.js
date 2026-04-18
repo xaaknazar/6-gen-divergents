@@ -636,6 +636,7 @@
     container.style.top = '0';
     container.style.zIndex = '-1';
     container.style.pointerEvents = 'none';
+    container.classList.add('capturing');
 
     try {
       if (document.fonts && document.fonts.ready) {
@@ -676,6 +677,7 @@
       console.error('PDF export failed', err);
       alert('Не удалось сгенерировать PDF. Попробуй еще раз.');
     } finally {
+      container.classList.remove('capturing');
       container.style.display = prev.display;
       container.style.position = prev.position;
       container.style.left = prev.left;
