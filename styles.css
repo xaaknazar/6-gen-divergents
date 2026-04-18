@@ -668,9 +668,9 @@ main {
 }
 .pdf-cover-lead b { color: #1a1d24; font-weight: 700; }
 .pdf-cover-gears {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  justify-items: center;
   gap: 2mm;
   margin: 0 0 12mm;
 }
@@ -721,11 +721,12 @@ main {
 }
 .pdf-overview-p b { color: #1a1d24; font-weight: 700; }
 .pdf-overview-cycle {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
   justify-content: space-between;
-  gap: 1mm;
+  align-items: center;
+  column-gap: 1mm;
   margin: 8mm 0 10mm;
 }
 .pdf-overview-arrow {
@@ -806,9 +807,10 @@ main {
   background: #ffffff;
   border: 1px solid #ece8dd;
   border-radius: 1.5mm;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  justify-items: center;
+  align-items: start;
   gap: 2mm;
   margin-bottom: 9mm;
 }
@@ -994,10 +996,10 @@ main {
   width: 1mm;
 }
 .pdf-pairing-card-head {
-  display: flex;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: auto auto auto 1fr;
   align-items: center;
-  gap: 4mm;
+  column-gap: 4mm;
   margin-bottom: 5mm;
 }
 .pdf-pairing-plus {
@@ -1008,7 +1010,7 @@ main {
   letter-spacing: -0.02em;
 }
 .pdf-pairing-code-wrap {
-  margin-left: auto;
+  justify-self: end;
   text-align: right;
 }
 .pdf-pairing-code-label {
