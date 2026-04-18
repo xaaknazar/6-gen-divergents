@@ -562,13 +562,18 @@
     const stroke = active ? accent : '#c7ccd6';
     const inner = '#ffffff';
     const txt = active ? accent : '#a7adb9';
+    // Coords shifted from design's [-52..52] space into a positive [0..104]
+    // viewBox via the wrapping translate — mobile html2canvas does not
+    // reliably honor negative viewBox origins.
     return `
-<svg viewBox="-52 -52 104 104" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="pdf-gear-svg">
-  <g fill="${fill}" stroke="${stroke}" stroke-width="1.4" stroke-linejoin="round">
-    <path d="M -8 -46 L 8 -46 L 11 -37 L 20 -34 L 28 -40 L 40 -28 L 34 -20 L 37 -11 L 46 -8 L 46 8 L 37 11 L 34 20 L 40 28 L 28 40 L 20 34 L 11 37 L 8 46 L -8 46 L -11 37 L -20 34 L -28 40 L -40 28 L -34 20 L -37 11 L -46 8 L -46 -8 L -37 -11 L -34 -20 L -40 -28 L -28 -40 L -20 -34 L -11 -37 Z" />
+<svg viewBox="0 0 104 104" width="104" height="104" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="pdf-gear-svg">
+  <g transform="translate(52,52)">
+    <g fill="${fill}" stroke="${stroke}" stroke-width="1.4" stroke-linejoin="round">
+      <path d="M -8 -46 L 8 -46 L 11 -37 L 20 -34 L 28 -40 L 40 -28 L 34 -20 L 37 -11 L 46 -8 L 46 8 L 37 11 L 34 20 L 40 28 L 28 40 L 20 34 L 11 37 L 8 46 L -8 46 L -11 37 L -20 34 L -28 40 L -40 28 L -34 20 L -37 11 L -46 8 L -46 -8 L -37 -11 L -34 -20 L -40 -28 L -28 -40 L -20 -34 L -11 -37 Z" />
+    </g>
+    <circle r="22" fill="${inner}" stroke="${stroke}" stroke-width="1.4" />
+    <text x="0" y="2" text-anchor="middle" dominant-baseline="middle" font-family="Unbounded, Manrope, sans-serif" font-weight="700" font-size="26" fill="${txt}">${letter}</text>
   </g>
-  <circle r="22" fill="${inner}" stroke="${stroke}" stroke-width="1.4" />
-  <text x="0" y="2" text-anchor="middle" dominant-baseline="middle" font-family="Unbounded, Manrope, sans-serif" font-weight="700" font-size="26" fill="${txt}">${letter}</text>
 </svg>`;
   }
 
@@ -697,9 +702,14 @@
       const size = parseFloat(g.style.getPropertyValue('--gear-size')) || 80;
       const svg = g.querySelector('.pdf-gear-svg');
       if (svg) {
+        // Mobile html2canvas uses SVG width/height attributes as the
+        // intrinsic size, not just CSS — pin both.
+        svg.setAttribute('width', String(size));
+        svg.setAttribute('height', String(size));
         svg.style.setProperty('width', size + 'px', 'important');
         svg.style.setProperty('height', size + 'px', 'important');
-        svg.style.setProperty('display', 'inline-block', 'important');
+        svg.style.setProperty('display', 'block', 'important');
+        svg.style.setProperty('margin', '0 auto', 'important');
       }
     });
   }
