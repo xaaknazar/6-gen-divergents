@@ -648,6 +648,11 @@
       const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
       const pageW = 210;
       const pageH = 297;
+      // A4 at 96dpi in CSS pixels: 210mm = 793.7px, 297mm = 1122.5px.
+      // Pin html2canvas to these dimensions so mobile viewports (~375px wide)
+      // don't trigger responsive reflow of the report.
+      const pxW = 794;
+      const pxH = 1123;
 
       for (let i = 0; i < pages.length; i += 1) {
         const canvas = await window.html2canvas(pages[i], {
@@ -655,8 +660,10 @@
           useCORS: true,
           backgroundColor: '#faf8f3',
           logging: false,
-          windowWidth: pages[i].scrollWidth,
-          windowHeight: pages[i].scrollHeight
+          width: pxW,
+          height: pxH,
+          windowWidth: pxW,
+          windowHeight: pxH
         });
         const img = canvas.toDataURL('image/jpeg', 0.95);
         if (i > 0) pdf.addPage('a4', 'portrait');
