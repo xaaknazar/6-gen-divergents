@@ -5,12 +5,14 @@ function GearSVG({ letter, active, accent, size=110, label }) {
   const stroke = active ? accent : '#c7ccd6';
   return (
     <div style={{ textAlign:'center', width: size, flexShrink: 0, overflow:'visible' }}>
-      <svg viewBox="-52 -52 104 104" width={size} height={size} style={{ display:'block', margin:'0 auto' }}>
+      <svg viewBox="-46 -46 92 92" width={size} height={size}
+           preserveAspectRatio="xMidYMid meet"
+           style={{ display:'block', margin:'0 auto' }}>
         <rect x="-44" y="-44" width="88" height="88" rx="18" ry="18"
               fill={fill} stroke={stroke} strokeWidth="1.4" />
         <text x="0" y="2" textAnchor="middle" dominantBaseline="middle"
               fontFamily="Unbounded, Manrope, sans-serif" fontWeight="700"
-              fontSize="56" fill={txt}>{letter}</text>
+              fontSize="54" fill={txt}>{letter}</text>
       </svg>
       <div style={{
         marginTop: 8,
