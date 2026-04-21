@@ -280,16 +280,12 @@
 
   function gearSVG(letter, active, accent) {
     const fill = active ? accent : '#d4d8e0';
-    const inner = active ? '#ffffff' : '#ffffff';
-    const txt = active ? accent : '#a0a6b4';
     const stroke = active ? accent : '#b8bdc8';
+    const txt = active ? '#ffffff' : '#a0a6b4';
     return `
 <svg viewBox="-52 -52 104 104" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <g fill="${fill}" stroke="${stroke}" stroke-width="1.5" stroke-linejoin="round">
-    <path d="M -8 -46 L 8 -46 L 11 -37 L 20 -34 L 28 -40 L 40 -28 L 34 -20 L 37 -11 L 46 -8 L 46 8 L 37 11 L 34 20 L 40 28 L 28 40 L 20 34 L 11 37 L 8 46 L -8 46 L -11 37 L -20 34 L -28 40 L -40 28 L -34 20 L -37 11 L -46 8 L -46 -8 L -37 -11 L -34 -20 L -40 -28 L -28 -40 L -20 -34 L -11 -37 Z" />
-  </g>
-  <circle r="22" fill="${inner}" stroke="${stroke}" stroke-width="1.5" />
-  <text x="0" y="2" text-anchor="middle" dominant-baseline="middle" font-family="Unbounded, Manrope, sans-serif" font-weight="700" font-size="26" fill="${txt}">${letter}</text>
+  <rect x="-44" y="-44" width="88" height="88" rx="18" ry="18" fill="${fill}" stroke="${stroke}" stroke-width="1.5" />
+  <text x="0" y="2" text-anchor="middle" dominant-baseline="middle" font-family="Unbounded, Manrope, sans-serif" font-weight="700" font-size="56" fill="${txt}">${letter}</text>
 </svg>`;
   }
 
