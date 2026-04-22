@@ -669,17 +669,18 @@ main {
 }
 .pdf-cover-lead b { color: #1a1d24; font-weight: 700; }
 .pdf-cover-gears {
-  display: table;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0 2mm;
   width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
   margin: 0 0 12mm;
 }
 .pdf-cover-gears > .pdf-gear {
-  display: table-cell;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  vertical-align: top;
-  padding: 0 1mm;
+  min-width: 0;
 }
 .pdf-cover-callout {
   padding: 6mm 7mm;
@@ -817,18 +818,19 @@ main {
   background: #ffffff;
   border: 1px solid #ece8dd;
   border-radius: 1.5mm;
-  display: table;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0 2mm;
   width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
   margin-bottom: 9mm;
   box-sizing: border-box;
 }
 .pdf-results-gears > .pdf-gear {
-  display: table-cell;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  vertical-align: top;
-  padding: 0 1mm;
+  min-width: 0;
 }
 .pdf-results-cols {
   display: grid;
