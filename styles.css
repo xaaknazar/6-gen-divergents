@@ -739,18 +739,17 @@ main {
 .pdf-overview-p b { color: #1a1d24; font-weight: 700; }
 .pdf-overview-cycle {
   --cycle-mark-size: 78px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 2mm;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: start;
+  column-gap: 2mm;
   margin: 8mm 0 10mm;
 }
 .pdf-overview-cycle > .pdf-gear {
-  flex: 0 1 auto;
   min-width: 0;
+  justify-self: center;
 }
 .pdf-overview-arrow {
-  flex: 0 0 auto;
   color: #cfc9b8;
   font-size: 14pt;
   line-height: 1;
