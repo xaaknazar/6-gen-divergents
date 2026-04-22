@@ -594,11 +594,20 @@ main {
   flex-direction: column;
   align-items: center;
 }
-.pdf-gear-svg {
+.pdf-gear-mark {
   width: var(--gear-size, 22mm);
   height: var(--gear-size, 22mm);
-  display: block;
-  margin: 0 auto;
+  max-width: 100%;
+  border-radius: 20%;
+  border: 1px solid;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: calc(var(--gear-size, 22mm) * 0.5);
+  line-height: 1;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 .pdf-gear-label {
   margin-top: 2mm;
