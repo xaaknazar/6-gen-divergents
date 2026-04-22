@@ -548,22 +548,15 @@
   }
 
   function gearBlock(letter, active, accent, label, size) {
-    return `
-      <div class="pdf-gear" style="--gear-size:${size}px;--gear-color:${accent || '#c7ccd6'}">
-        ${gearSVG(letter, active, accent)}
-        <div class="pdf-gear-label" style="color:${active ? (accent || '#8a8f9a') : '#8a8f9a'}">${label}</div>
-      </div>`;
-  }
-
-  function gearSVG(letter, active, accent) {
     const fill = active ? accent : '#e8ecf3';
     const stroke = active ? accent : '#c7ccd6';
     const txt = active ? '#ffffff' : '#a7adb9';
+    const labelColor = active ? (accent || '#8a8f9a') : '#8a8f9a';
     return `
-<svg viewBox="-46 -46 92 92" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="pdf-gear-svg" preserveAspectRatio="xMidYMid meet">
-  <rect x="-44" y="-44" width="88" height="88" rx="18" ry="18" fill="${fill}" stroke="${stroke}" stroke-width="1.4" />
-  <text x="0" y="2" text-anchor="middle" dominant-baseline="middle" font-family="Unbounded, Manrope, sans-serif" font-weight="700" font-size="54" fill="${txt}">${letter}</text>
-</svg>`;
+      <div class="pdf-gear" style="--gear-size:${size}px;--gear-color:${accent || '#c7ccd6'}">
+        <div class="pdf-gear-mark" style="background:${fill};border-color:${stroke};color:${txt}">${letter}</div>
+        <div class="pdf-gear-label" style="color:${labelColor}">${label}</div>
+      </div>`;
   }
 
   // ===== Google Sheets submission =====
