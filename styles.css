@@ -738,22 +738,27 @@ main {
 }
 .pdf-overview-p b { color: #1a1d24; font-weight: 700; }
 .pdf-overview-cycle {
-  display: table;
-  width: 100%;
-  table-layout: auto;
-  border-collapse: collapse;
+  --cycle-mark-size: 78px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2mm;
   margin: 8mm 0 10mm;
 }
-.pdf-overview-cycle > * {
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
+.pdf-overview-cycle > .pdf-gear {
+  flex: 0 1 auto;
+  min-width: 0;
 }
 .pdf-overview-arrow {
+  flex: 0 0 auto;
   color: #cfc9b8;
-  font-size: 13pt;
-  margin-top: -4mm;
-  flex-shrink: 0;
+  font-size: 14pt;
+  line-height: 1;
+  height: var(--cycle-mark-size, 78px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
 }
 .pdf-overview-grid {
   display: grid;
