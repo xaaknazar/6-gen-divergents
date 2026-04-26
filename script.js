@@ -661,7 +661,7 @@
       }
 
       const safeName = (state.name || 'report').replace(/[^\p{L}\p{N}\-_. ]+/gu, '').trim() || 'report';
-      pdf.save(`Divergents — ${safeName}.pdf`);
+      pdf.save(`TalentsLab 6 genius test - ${safeName}.pdf`);
     } catch (err) {
       console.error('PDF export failed', err);
       alert('Не удалось сгенерировать PDF. Попробуй еще раз.');
