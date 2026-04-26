@@ -260,8 +260,7 @@
     return `
       <header class="pdf-header">
         <div class="pdf-wordmark">
-          <img class="pdf-wordmark-logo" src="divergents-logo.png" alt="">
-          <span class="pdf-wordmark-name">Divergents</span><span class="pdf-wordmark-dot">·</span><span class="pdf-wordmark-sub">6 гениев команды</span>
+          <span class="pdf-wordmark-name">TalentsLab</span><span class="pdf-wordmark-dot">·</span><span class="pdf-wordmark-sub">6 гениев команды</span>
         </div>
         ${eyebrow ? `<div class="pdf-header-eyebrow${eyebrowLarge ? ' pdf-header-eyebrow--lg' : ''}" style="color:${accent || '#1a1d24'}">${eyebrow}</div>` : ''}
       </header>`;

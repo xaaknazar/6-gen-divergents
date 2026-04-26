@@ -529,13 +529,12 @@ main {
   align-items: center;
   gap: 8px;
 }
-.pdf-wordmark-logo {
-  width: 11mm;
-  height: 11mm;
-  display: block;
-  flex-shrink: 0;
+.pdf-wordmark-name {
+  display: inline-block;
+  font-family: 'Gotham Rounded', 'Gotham Rounded SSm', 'Nunito', var(--font-display);
+  font-weight: 800;
+  font-size: 14pt;
 }
-.pdf-wordmark-name { display: inline-block; }
 .pdf-wordmark-dot {
   color: #8a8f9a;
   font-weight: 400;
