@@ -269,7 +269,7 @@
   function reportFooter(page) {
     return `
       <div class="pdf-footer">
-        <span class="pdf-footer-brand"><img class="pdf-footer-logo" src="divergents-logo.png" alt="">Divergents.kz · методология The 6 Types of Working Genius</span>
+        <span class="pdf-footer-brand"><img class="pdf-footer-logo" src="divergents-logo.png" alt="">Powered by Divergents.kz · методология The 6 Types of Working Genius</span>
         <span>${state.name || ''}</span>
         <span>${page} / 8</span>
       </div>`;
