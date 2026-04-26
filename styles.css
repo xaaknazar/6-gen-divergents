@@ -95,8 +95,8 @@ button { cursor: pointer; border: 0; background: none; color: inherit; }
   text-decoration: none;
 }
 .brand-wordmark {
-  font-family: var(--font-display);
-  font-weight: 700;
+  font-family: 'Gotham Rounded', 'Gotham Rounded SSm', 'Nunito', var(--font-display);
+  font-weight: 800;
   font-size: 22px;
   letter-spacing: 0.01em;
   color: var(--text);
