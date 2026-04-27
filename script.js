@@ -23,6 +23,10 @@
     $('restartBtn').hidden = name === 'intro';
   }
 
+  function toTitleCase(s) {
+    return s.toLowerCase().replace(/(^|[\s\-'’])(\p{L})/gu, (_, sep, ch) => sep + ch.toUpperCase());
+  }
+
   // ===== Intro =====
   function renderHeroGeniuses() {
     const wrap = document.querySelector('.hero-geniuses');
@@ -57,7 +61,7 @@
       err.hidden = false;
       return;
     }
-    state.name = name;
+    state.name = toTitleCase(name);
     state.email = email;
     state.current = 0;
     state.answers = new Array(QUESTIONS.length).fill(null);
@@ -661,7 +665,7 @@
       }
 
       const safeName = (state.name || 'report').replace(/[^\p{L}\p{N}\-_. ]+/gu, '').trim() || 'report';
-      pdf.save(`TalentsLab 6 genius test - ${safeName}.pdf`);
+      pdf.save(`${safeName} - TalentsLab 6 Genius Test.pdf`);
     } catch (err) {
       console.error('PDF export failed', err);
       alert('Не удалось сгенерировать PDF. Попробуй еще раз.');
